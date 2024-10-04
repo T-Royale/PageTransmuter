@@ -23,11 +23,14 @@ int nDirecciones = 0;
 //Array global de rutas
 Rutas_t *Rutas = NULL;
 
+extern char* HTML_ELEGIDO;
+
 //HandleFiles.h
 //Termina el programa de forma segura
 void CerrarPrograma(){
     if(Rutas != NULL) free(Rutas);
-    exit(1);
+    if(HTML_ELEGIDO != NULL) free(HTML_ELEGIDO);
+    exit(0);
 }
 
 //HandleFiles.h

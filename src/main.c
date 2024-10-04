@@ -11,7 +11,10 @@
 int main() {
     inicio(); //Menú de bienvenida, termina cuando empieza la TRANSMUTACIÓN
     ElegirHTML(); //Pide al usuario que elija el HTML a transfusionar
-    printf("=============================\n>>>Ha salido correctamente<<<\n=============================");
+    //La dirección del HTML orígen se almacena en HTML_ELEGIDO
+    printf("%s\n", HTML_ELEGIDO);
+    printf("=======================\nHa salido correctamente\n=======================");
+    free(HTML_ELEGIDO);
     free(Rutas);
     return 0;
 }

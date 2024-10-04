@@ -22,6 +22,7 @@ int inicio(){
     printf("Bienvenido a PageTransmuter\n");
     printf("Formatea un archivo HTML para usarlo en C y C++\n");
     getchar();
+    while(getchar() != '\n'); //Limpiar el buffer de entrada
     //mostrar opciones de inicio
     bool teclavalida = true;
     //Abrir instrucciones por si se consultan
@@ -74,7 +75,7 @@ int inicio(){
     return 0;
 }
 
-char HTML_ELEGIDO[MAX_PATH];
+char* HTML_ELEGIDO = NULL;
 
 //Messages.h
 //Elegir doucumento HTML a transfusionar
@@ -83,7 +84,7 @@ void ElegirHTML(){
     limpiar();
     printf("Selecciona el archivo HTML a Transmutar\n");
     int nArchivos = MostrarHTMLdocs();
-    if(nArchivos < -1) {
+    if(nArchivos == -1) {
         printf("No se ha encontrado ningún HTML\n");
         CerrarPrograma();
     }
@@ -95,6 +96,6 @@ void ElegirHTML(){
         Sleep(500);
         goto inicio;
     }
-    strcpy(HTML_ELEGIDO, SelectHTMLdocs(eleccion));
+    HTML_ELEGIDO = SelectHTMLdocs(eleccion);
 }
 #endif
