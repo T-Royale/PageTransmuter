@@ -1,2 +1,3 @@
 # PageTransmuter
- Integrate HTML/CSS into your C/C++ code by transmuting it into a header file.
+## Formatea un archivo HTML para usarlo en C y C++
+## 

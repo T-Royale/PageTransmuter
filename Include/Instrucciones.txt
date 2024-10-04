@@ -1,0 +1,8 @@
+Como usar PageTransmuter:
+    -> Mete los archivos HTML que quieras convertir en /#HTML_AQUI#
+    -> Abre el programa y selecciona |Transmutar HTML|
+    -> Sigue las instrucciones de la teminal
+Marca una opcion
+    1  Transmutar HTML
+    2- T_Royale en GitHub
+    3- Salir

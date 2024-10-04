@@ -1,0 +1,1 @@
+//Aquí irán todas las funciones que tengan que ver con adaptar el codigo HTML a un header de C++
