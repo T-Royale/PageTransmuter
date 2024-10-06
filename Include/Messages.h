@@ -6,6 +6,7 @@
 #include<stdlib.h>
 #include<stdbool.h>
 #include<windows.h>
+#include<io.h>
 
 #include"../Include/HandleFiles.h"
 
@@ -15,13 +16,16 @@ void limpiar(){
     system("cls");
     system("color a");
 }
+extern bool limpiarEnInicio;
+
 //Messages.h
 //Mensajes y opciones de inicio
 int inicio(){
-    limpiar();
+    (limpiarEnInicio) ? limpiar() : system("color a");
+
     printf("Bienvenido a PageTransmuter\n");
     printf("Formatea un archivo HTML para usarlo en C y C++\n");
-    getchar();
+
     while(getchar() != '\n'); //Limpiar el buffer de entrada
     //mostrar opciones de inicio
     bool teclavalida = true;
@@ -97,5 +101,61 @@ void ElegirHTML(){
         goto inicio;
     }
     HTML_ELEGIDO = SelectHTMLdocs(eleccion);
+}
+//Messages.h
+//Decidir la ruta destino donde será creado el header
+Rutas_t* DecidirDestino(){
+inicio:
+    limpiar();
+    printf("Elige el destino de la transmutación\n");
+    MostrarRutasGuardadas();    //nDirecciones es en nº de rutas guardadas+1
+    printf("%d- Anadir direccion\n", nDirecciones);
+    int eleccion = 0;
+    scanf("%d", &eleccion);
+    while(getchar() != '\n');
+    if(eleccion > nDirecciones || eleccion < 0) goto inicio;
+
+    //Añadir dirección nueva
+    if(eleccion == nDirecciones){
+    AñadirRuta:
+        limpiar();
+        Rutas_t NuevaRuta;
+
+        printf("Nombre de la nueva direccion:");
+        fgets(NuevaRuta.nombre, sizeof(NuevaRuta.nombre), stdin);
+        printf("Direccion del directorio destino:");
+        fgets(NuevaRuta.path, sizeof(NuevaRuta.path), stdin);
+
+        printf("Seguro que quieres anadir la siguiente ruta:\nNombre: %s\nPath: %s\nS/N\n", NuevaRuta.nombre, NuevaRuta.path);
+        char ans = getchar();
+        while(getchar() != '\n');
+        if(ans == 'n' || ans == 'N'){
+            goto AñadirRuta;
+        }
+
+        //Verificar si la ruta es valida
+        pulirPath(NuevaRuta.path);
+        const char *verificar =NuevaRuta.path;
+        if (access(verificar, F_OK)) {
+            limpiar();
+            system("color 0c");  //rojo para indicar error
+            printf("La ruta %s no es valida\nAsegurate de que la ruta es un directorio valido \
+            \nSi estas seguro ejecuta PageTransmuter como administrador\n", NuevaRuta.path);
+            system("pause");
+            goto AñadirRuta;
+        }
+        else{
+            limpiar();
+            printf("Nuevo destino anadido con exito\n");
+            Sleep(1000);
+            CrearRuta(NuevaRuta);
+            goto inicio;
+        }
+    }
+    //si no se ha decidido crear ninguna ruta
+    else { 
+    Rutas_t* rutaElegida = &Rutas[eleccion];
+    return rutaElegida;
+    }
 }
 #endif

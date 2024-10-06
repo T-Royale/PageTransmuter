@@ -1,2 +1,0 @@
-Numero elementos: 1
-Prueba, C:\Users\teo\Downloads\Prueba_Crear_Header

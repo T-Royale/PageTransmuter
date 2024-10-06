@@ -10,7 +10,9 @@
 
 #define HTML_DIR "../HTML_AQUI/"
 
-#define Saved_adr"../Program_files/Saved_adresses.txt"
+#define Saved_adr "../Program_files/Saved_adresses.bin"
+
+extern void limpiar();
 
 typedef struct Rutas_t{
     char nombre[20]; //Nombre de la ubicación
@@ -20,6 +22,7 @@ typedef struct Rutas_t{
 //Número de direcciones
 int nDirecciones = 0;
 
+//HandleFiles.h
 //Array global de rutas
 Rutas_t *Rutas = NULL;
 
@@ -36,41 +39,34 @@ void CerrarPrograma(){
 //HandleFiles.h
 //Leer rutas gruardadas
 void LeerRutas() {
-    FILE *Direccion = fopen(Saved_adr, "r");
-    char Buffer[MAX_PATH];
-    fgets(Buffer, MAX_PATH, Direccion);
-    sscanf(Buffer, "Numero elementos: %d\n",&nDirecciones);
+    FILE *save = fopen(Saved_adr, "rb");
+    fread(&nDirecciones, sizeof(int), 1, save);
     Rutas = calloc(nDirecciones, sizeof(Rutas_t));
-    for (int i = 0; i < nDirecciones; i++) {
-        if (fgets(Buffer, sizeof(Buffer), Direccion) != NULL) {
-            sscanf(Buffer, "%s, %s\n", Rutas[i].nombre, Rutas[i].path);
-        }
-    }
-    fclose(Direccion);
+    fread(Rutas, sizeof(Rutas_t), nDirecciones, save);
+    fclose(save);
 }
 
 
 //HandleFiles.h
-//Mostrar rutas guardadas
+//Lee las rutas guardadas y las muestra
 void MostrarRutasGuardadas() {
     limpiar();
     LeerRutas();
+    printf("Elige la ruta destino:\n");
     for(int i = 0; i < nDirecciones; i++){
-        printf("%d- %s\n", i,Rutas[i].nombre);
+        printf("%d- %s", i,Rutas[i].nombre);
+        Sleep(250);
     }
-    system("pause");
 }
 
 
 //HandleFiles.h
 //Guardar rutas
 void GuardarRutas() {
-    FILE *Direccion = fopen(Saved_adr, "w");
-    fprintf(Direccion, "Numero elementos: %d\n", nDirecciones);
-    for(int i = 0; i < nDirecciones; i++){
-        fprintf(Direccion, "%s, %s\n",Rutas[i].nombre, Rutas[i].path);
-    }
-    fclose(Direccion);
+    FILE *save = fopen(Saved_adr, "wb");
+    fwrite(&nDirecciones, sizeof(int), 1, save);
+    fwrite(Rutas, sizeof(Rutas_t), nDirecciones, save);
+    fclose(save);
 }
 
 
@@ -78,10 +74,10 @@ void GuardarRutas() {
 //Crear ruta
 //Pasar Rutas_t como argumento
 void CrearRuta(Rutas_t ruta_a_crear) {
-    FILE *Direccion = fopen(Saved_adr, "a");
-    fprintf(Direccion, "%s, %s\n", ruta_a_crear.nombre, ruta_a_crear.path);
-    fclose(Direccion);
     LeerRutas();
+    nDirecciones++;
+    Rutas = realloc(Rutas, nDirecciones * sizeof(Rutas_t));
+    Rutas[nDirecciones - 1] = ruta_a_crear;
     GuardarRutas();
 }
 
@@ -90,20 +86,7 @@ void CrearRuta(Rutas_t ruta_a_crear) {
 //Borrar Ruta
 //Pasar Rutas_t como argumento
 void BorrarRuta(Rutas_t ruta_a_borrar){
-    char linea[MAX_PATH];    //línea leida
-    char esperada[MAX_PATH]; //Línea esperada (para eliminar)
-    sprintf(esperada, "%s, %s\n", ruta_a_borrar.nombre, ruta_a_borrar.path);
-    FILE *save = fopen(Saved_adr, "r"); //abrir para leer y reemplazar el contenido
-    FILE *temp = fopen("../Program_files/temp.txt","w"); //abrir para almacenar contenido
-    while(fgets(linea, sizeof(linea), save) != NULL){
-        if(strcmp(linea, esperada) != 0){   //Si no son iguales
-            fprintf(temp, "%s", linea); //Imprime el resultado
-        }
-    }
-    fclose(save);
-    fclose(temp);
-    remove(Saved_adr);
-    rename("../Program_files/temp.txt", Saved_adr);
+    //Borrar la ruta
     GuardarRutas();
 }
 
@@ -161,6 +144,15 @@ char *SelectHTMLdocs(int elegido) {
     free(nombreArchivo);
 
     return rutaCompleta; // devolver la ruta completa
+}
+//HandleFiles.h
+//Cambia los "\" por "/" y quita un salto de línea
+void pulirPath(char* string) {
+    int size = strlen(string);
+    for(int i = 0; i < size; i++){
+        if(string[i] == '\\') string[i] = '/';
+        if(string[i] == '\n') string[i] = '\0';
+    }
 }
 
 #endif
