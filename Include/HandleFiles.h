@@ -50,9 +50,7 @@ void LeerRutas() {
 //HandleFiles.h
 //Lee las rutas guardadas y las muestra
 void MostrarRutasGuardadas() {
-    limpiar();
     LeerRutas();
-    printf("Elige la ruta destino:\n");
     for(int i = 0; i < nDirecciones; i++){
         printf("%d- %s", i,Rutas[i].nombre);
         Sleep(250);
@@ -84,9 +82,16 @@ void CrearRuta(Rutas_t ruta_a_crear) {
 
 //HandleFiles.h
 //Borrar Ruta
-//Pasar Rutas_t como argumento
-void BorrarRuta(Rutas_t ruta_a_borrar){
+//Pasar posición a eliminar como argumento
+void BorrarRuta(int pos){
+    LeerRutas();
     //Borrar la ruta
+    int nextPos = pos;
+    for(int i = 0; i < nDirecciones - pos; i++, nextPos++){
+        if(&Rutas[nextPos+1] == NULL) break;
+        Rutas[nextPos] = Rutas[nextPos+1];
+    }
+    nDirecciones--;
     GuardarRutas();
 }
 

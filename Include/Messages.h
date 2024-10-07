@@ -10,6 +10,9 @@
 
 #include"../Include/HandleFiles.h"
 
+int masOpciones();
+void noHayRutas();
+
 //Messages.h
 //Limpiar la pantalla
 void limpiar(){
@@ -107,16 +110,33 @@ void ElegirHTML(){
 Rutas_t* DecidirDestino(){
 inicio:
     limpiar();
-    printf("Elige el destino de la transmutación\n");
+    printf("Elige la ruta destino:\n");
     MostrarRutasGuardadas();    //nDirecciones es en nº de rutas guardadas+1
-    printf("%d- Anadir direccion\n", nDirecciones);
+    printf("%d- Mas opciones\n", nDirecciones);
     int eleccion = 0;
     scanf("%d", &eleccion);
     while(getchar() != '\n');
     if(eleccion > nDirecciones || eleccion < 0) goto inicio;
-
-    //Añadir dirección nueva
-    if(eleccion == nDirecciones){
+    if(eleccion == nDirecciones) if(masOpciones() == 0) goto inicio;
+    //si no se ha decidido crear ninguna ruta
+    else { 
+    Rutas_t* rutaElegida = &Rutas[eleccion];
+    return rutaElegida;
+    }
+}
+//HandleFiles.h
+//Más opciones de rutas guardadas
+int masOpciones(){
+    //Más opciones
+    int ans = 0;
+MasOpciones:
+    limpiar();
+    printf("Que quieres hacer?\n\t1. Crear nueva ruta\n\t2. Eliminar ruta existente \
+    \n\t3. Volver atras\n");
+    scanf("%d", &ans);
+    while(getchar() != '\n');
+    //Añadir ruta
+    if(ans == 1){
     AñadirRuta:
         limpiar();
         Rutas_t NuevaRuta;
@@ -149,13 +169,33 @@ inicio:
             printf("Nuevo destino anadido con exito\n");
             Sleep(1000);
             CrearRuta(NuevaRuta);
-            goto inicio;
+            return 0;
         }
     }
-    //si no se ha decidido crear ninguna ruta
-    else { 
-    Rutas_t* rutaElegida = &Rutas[eleccion];
-    return rutaElegida;
+    //Borrar ruta
+    else if(ans == 2){
+        if(nDirecciones == 0){
+            noHayRutas();
+            goto AñadirRuta;
+        }
+        int eliminar;
+        limpiar();
+        printf("Selecciona la ruta que quieres borrar\n");
+        MostrarRutasGuardadas();
+        scanf("%d", &eliminar);
+        while(getchar() != '\n');
+        BorrarRuta(eliminar);
+        printf("Se debería de haber borrado");
+        return 0;
     }
+    else if(ans == 3){
+        return 0;
+    }
+    else goto MasOpciones;
+}
+void noHayRutas(){
+    system("color c");
+    printf("No se han encontrado rutas guardadas :(\nENTER: Crear una nueva\n");
+    while(getchar() != '\n');
 }
 #endif
