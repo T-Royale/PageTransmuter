@@ -24,8 +24,7 @@ extern bool limpiarEnInicio;
 //Messages.h
 //Mensajes y opciones de inicio
 int inicio(){
-    (limpiarEnInicio) ? limpiar() : system("color a");
-
+    if(limpiarEnInicio) limpiar();
     printf("Bienvenido a PageTransmuter\n");
     printf("Formatea un archivo HTML para usarlo en C y C++\n");
 
@@ -119,10 +118,10 @@ inicio:
     if(eleccion > nDirecciones || eleccion < 0) goto inicio;
     if(eleccion == nDirecciones) if(masOpciones() == 0) goto inicio;
     //si no se ha decidido crear ninguna ruta
-    else { 
     Rutas_t* rutaElegida = &Rutas[eleccion];
+    quitarSaltoLinea(rutaElegida->path);
     return rutaElegida;
-    }
+
 }
 //HandleFiles.h
 //Más opciones de rutas guardadas
@@ -152,24 +151,19 @@ MasOpciones:
         if(ans == 'n' || ans == 'N'){
             goto AñadirRuta;
         }
-
-        //Verificar si la ruta es valida
-        pulirPath(NuevaRuta.path);
-        const char *verificar =NuevaRuta.path;
-        if (access(verificar, F_OK)) {
-            limpiar();
-            system("color 0c");  //rojo para indicar error
-            printf("La ruta %s no es valida\nAsegurate de que la ruta es un directorio valido \
-            \nSi estas seguro ejecuta PageTransmuter como administrador\n", NuevaRuta.path);
-            system("pause");
-            goto AñadirRuta;
-        }
-        else{
+        if(rutaValida(NuevaRuta)){
             limpiar();
             printf("Nuevo destino anadido con exito\n");
             Sleep(1000);
             CrearRuta(NuevaRuta);
             return 0;
+        }
+        else{
+            limpiar();
+            system("color 0c");  //rojo para indicar error
+            printf("La ruta %s no es valida\nAsegurate de que la ruta es un directorio valido \
+            \nSi estas seguro ejecuta PageTransmuter como administrador\n",NuevaRuta.path);
+            system("pause");
         }
     }
     //Borrar ruta
@@ -185,7 +179,10 @@ MasOpciones:
         scanf("%d", &eliminar);
         while(getchar() != '\n');
         BorrarRuta(eliminar);
-        printf("Se debería de haber borrado");
+        if(nDirecciones == 0){
+            noHayRutas();
+            goto AñadirRuta;
+        }
         return 0;
     }
     else if(ans == 3){
@@ -197,5 +194,13 @@ void noHayRutas(){
     system("color c");
     printf("No se han encontrado rutas guardadas :(\nENTER: Crear una nueva\n");
     while(getchar() != '\n');
+}
+//Messages.h
+//Darle un nombre al proyecto
+void projectName(char* Nombre){
+    limpiar();
+    printf("Nuevo nombre del archivo:");
+    fgets(Nombre, 20, stdin);
+    quitarSaltoLinea(Nombre);
 }
 #endif

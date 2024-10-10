@@ -7,6 +7,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<windows.h>
+#include<stdbool.h>
 
 #define HTML_DIR "../HTML_AQUI/"
 
@@ -157,6 +158,21 @@ void pulirPath(char* string) {
     for(int i = 0; i < size; i++){
         if(string[i] == '\\') string[i] = '/';
         if(string[i] == '\n') string[i] = '\0';
+    }
+}
+//HandleFiles.h
+//Comprueba si una dirección es valida
+bool rutaValida(Rutas_t Ruta){
+        //Verificar si la ruta es valida
+        pulirPath(Ruta.path);
+        const char *verificar = Ruta.path;
+        //Si existe devuelve 0 (falso) al if
+        return (access(verificar, F_OK)) ? false : true;
+}
+
+void quitarSaltoLinea(char* str){
+    for(int i = 0; i < strlen(str);i++){
+        if(str[i] == '\n') str[i] = '\0';
     }
 }
 

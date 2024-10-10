@@ -8,7 +8,7 @@
 #include "../include/RuleEngine.h"
 //Debug:
 //Limpiar terminal al inicio
-bool limpiarEnInicio = true;
+bool limpiarEnInicio = false;
 
 //Función principal:
 int main() {
@@ -16,7 +16,12 @@ int main() {
     ElegirHTML(); //Pide al usuario que elija el HTML a transfusionar
     //La dirección del HTML orígen se almacena en HTML_ELEGIDO
     Rutas_t* rutaElegida = DecidirDestino();    //Decidir ubicación final
+    char Nombre[20];
+    projectName(Nombre); //Guarda el nombre del proyecto
+    printf("El nombre del archivo es %s\n", Nombre);
     printf("La ruta elegida es: %s\n", rutaElegida->path);
+    //La ejecución termina aquí//
+    TransmutarHTML(rutaElegida->path, HTML_ELEGIDO, Nombre);
     printf("=======================\nHa salido correctamente\n=======================");
     free(HTML_ELEGIDO);
     free(Rutas);
