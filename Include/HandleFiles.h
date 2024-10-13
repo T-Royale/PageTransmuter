@@ -169,11 +169,48 @@ bool rutaValida(Rutas_t Ruta){
         //Si existe devuelve 0 (falso) al if
         return (access(verificar, F_OK)) ? false : true;
 }
-
-void quitarSaltoLinea(char* str){
+//HandleFiles.h
+//Quitar salto de linea (y espacios)
+void quitarSaltoLineaYEspacios(char* str, bool QuitarEspacios){
     for(int i = 0; i < strlen(str);i++){
         if(str[i] == '\n') str[i] = '\0';
+        if (QuitarEspacios) if(str[i] == ' ') str[i] = '_';
     }
+}
+//HandleFiles.h
+//Leer línea que no se su tamaño
+char* leerLinea(FILE* dir) {
+    size_t tam = 10; //Tamaño maximo de la cadena
+    size_t len = 0; //Tamaño actual de la cadena
+    char c; //Caracter leido
+    char* result = calloc(tam, sizeof(char));
+
+    if (result == NULL) {
+        return NULL; // Verificamos si la reserva de memoria falló
+    }
+    
+    while((c = fgetc(dir)) != EOF && c != '\n'){
+        //Si hay que darle mas memoria
+        if(len + 1 >= tam){
+            tam *= 2;
+            char* newResult = realloc(result, sizeof(char) * tam);
+
+            if(newResult == NULL){
+                free(result);
+                return NULL;
+            }
+            result = newResult;
+        }
+        result[len++] = c;
+    }
+    //Si no ha leido nada
+    if (len == 0 && c == EOF) {
+        free(result);
+        return NULL;
+    }
+
+    result[len] = '\0';
+    return result;
 }
 
 #endif

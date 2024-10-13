@@ -119,7 +119,7 @@ inicio:
     if(eleccion == nDirecciones) if(masOpciones() == 0) goto inicio;
     //si no se ha decidido crear ninguna ruta
     Rutas_t* rutaElegida = &Rutas[eleccion];
-    quitarSaltoLinea(rutaElegida->path);
+    quitarSaltoLineaYEspacios(rutaElegida->path, false);
     return rutaElegida;
 
 }
@@ -201,6 +201,6 @@ void projectName(char* Nombre){
     limpiar();
     printf("Nuevo nombre del archivo:");
     fgets(Nombre, 20, stdin);
-    quitarSaltoLinea(Nombre);
+    quitarSaltoLineaYEspacios(Nombre, true);
 }
 #endif

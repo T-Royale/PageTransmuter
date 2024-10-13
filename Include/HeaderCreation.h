@@ -1,4 +1,4 @@
-//Mensajes y pasos para crear el heather
+//Funciones para crear el heather
 #ifndef CREATE_HEADER_H
 #define CREATE_HEADER_H
 
@@ -9,7 +9,8 @@
 #include<string.h>
 
 #include"RuleEngine.h"
-
+//HeaderCreation.h
+//Añadir el #ifndef ... #define ...
 void AddIfndefDefine(FILE* stream, char* name){
     char defName[30];
     sprintf(defName, "%s_H", name);
@@ -18,5 +19,15 @@ void AddIfndefDefine(FILE* stream, char* name){
         if(islower(defName[i])) defName[i] = toupper(defName[i]);
     }
     fprintf(stream, "#ifndef %s\n#define %s\n\n", defName, defName);
+}
+//HeaderCreation.h
+//añadir la definición de la macro que devolverá el HTML
+void AddDefine(FILE* stream, char* name){
+    fprintf(stream, "#define %s \\ \n", name);
+}
+//HeaderCreation.h
+//Añadir el endif
+void AddEndif(FILE* stream){
+    fprintf(stream, "\n\n#endif");
 }
 #endif
