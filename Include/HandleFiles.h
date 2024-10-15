@@ -122,8 +122,8 @@ int MostrarHTMLdocs(){
     return i;
 }
 //Handlefiles.h
-//Devuelve un puntero a la dirección de la ruta completa
-char *SelectHTMLdocs(int elegido) {
+//Devuelve la cadena de la ruta en la posición (pos)
+char *SelectHTMLdocs(int pos) {
     WIN32_FIND_DATA findFile;
     char rutaBusqueda[MAX_PATH];
 
@@ -134,8 +134,8 @@ char *SelectHTMLdocs(int elegido) {
 
     char* nombreArchivo = NULL;
 
-    for (int i = 0; i <= elegido; i++) {
-        if (i == elegido) {
+    for (int i = 0; i <= pos; i++) {
+        if (i == pos) {
             nombreArchivo = malloc(strlen(findFile.cFileName) + 1);
             strcpy(nombreArchivo, findFile.cFileName);
             break; // Encontramos el archivo
@@ -162,12 +162,11 @@ void pulirPath(char* string) {
 }
 //HandleFiles.h
 //Comprueba si una dirección es valida
-bool rutaValida(Rutas_t Ruta){
+bool rutaValida(char* ruta){
         //Verificar si la ruta es valida
-        pulirPath(Ruta.path);
-        const char *verificar = Ruta.path;
+        pulirPath(ruta);
         //Si existe devuelve 0 (falso) al if
-        return (access(verificar, F_OK)) ? false : true;
+        return (access(ruta, F_OK)) ? false : true;
 }
 //HandleFiles.h
 //Quitar salto de linea (y espacios)

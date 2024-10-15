@@ -120,8 +120,17 @@ inicio:
     //si no se ha decidido crear ninguna ruta
     Rutas_t* rutaElegida = &Rutas[eleccion];
     quitarSaltoLineaYEspacios(rutaElegida->path, false);
+    //Comprobar si la ruta elegida existe
+    if(!rutaValida(rutaElegida->path)){
+        limpiar();
+        system("color c");
+        printf("La ruta seleccionada no existe\n");
+        Sleep(100);
+        printf("Prueba otra vez\n");
+        Sleep(1000);
+        goto inicio;
+    }
     return rutaElegida;
-
 }
 //HandleFiles.h
 //Más opciones de rutas guardadas
@@ -151,7 +160,7 @@ MasOpciones:
         if(ans == 'n' || ans == 'N'){
             goto AñadirRuta;
         }
-        if(rutaValida(NuevaRuta)){
+        if(rutaValida(NuevaRuta.path)){
             limpiar();
             printf("Nuevo destino anadido con exito\n");
             Sleep(1000);
