@@ -9,6 +9,8 @@
 #include<windows.h>
 #include<stdbool.h>
 
+#include "RuleEngine.h"
+
 #define HTML_DIR "../HTML_AQUI/"
 
 #define Saved_adr "../Program_files/Saved_adresses.bin"
@@ -178,6 +180,7 @@ void quitarSaltoLineaYEspacios(char* str, bool QuitarEspacios){
 }
 //HandleFiles.h
 //Leer línea que no se su tamaño
+//Escapa los caracteres no validos
 char* leerLinea(FILE* dir) {
     size_t tam = 10; //Tamaño maximo de la cadena
     size_t len = 0; //Tamaño actual de la cadena
@@ -187,7 +190,7 @@ char* leerLinea(FILE* dir) {
     if (result == NULL) {
         return NULL; // Verificamos si la reserva de memoria falló
     }
-    
+    //Mientras haya caracteres para leer
     while((c = fgetc(dir)) != EOF && c != '\n'){
         //Si hay que darle mas memoria
         if(len + 1 >= tam){
@@ -200,7 +203,7 @@ char* leerLinea(FILE* dir) {
             }
             result = newResult;
         }
-        result[len++] = c;
+        if(charValido(c, result, &len)) result[len++] = c;
     }
     //Si no ha leido nada
     if (len == 0 && c == EOF) {
@@ -211,5 +214,15 @@ char* leerLinea(FILE* dir) {
     result[len] = '\0';
     return result;
 }
+//HandleFiles.h
+//Devuelve true el archivo tiene contenido
+bool TieneContenido(char* ruta){
+    FILE* archivo = fopen(ruta, "r");
+    char c;
+    c = fgetc(archivo);
+    fclose(archivo);
+    return (c == EOF) ? false : true;
+}
+
 
 #endif

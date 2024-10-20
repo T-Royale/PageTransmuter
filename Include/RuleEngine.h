@@ -13,7 +13,9 @@
 #include "HeaderCreation.h"
 //Firmas de funciones
 char* TransmutarLinea(FILE *archivoSRC, char *linea);
-
+char* leerLinea(FILE* dir);
+//RuleEngine.h
+//Lee el HTML y lo analiza
 void TransmutarHTML(char* dest, char* src, char* name){
     char headerPath[MAX_PATH];  //Ruta del header
     sprintf(headerPath, "%s/%s.h", dest, name);
@@ -37,7 +39,6 @@ void TransmutarHTML(char* dest, char* src, char* name){
     AddEndif(HeaderFile);
     fclose(HTML_FILE);
     fclose(HeaderFile);
-    free(RawLinea);
 }
 //RuleEngine.h
 //Comprueba si la línea leida es la última
@@ -53,9 +54,9 @@ bool esUltimaLinea(FILE *archivo) {
     return false;
 }
 //RuleEngine.h
-//Función que analizará la línea leida
+//Añade comillas y barra invertida a la cadena
 char* TransmutarLinea(FILE *archivoSRC, char *linea) {
-    size_t len = strlen(linea) + 3;  // Espacio para las comillas y el null terminator
+    size_t len = strlen(linea) + 3;  // Espacio para las comillas y el '\0'
     char* result = malloc(len * sizeof(char));
     if (result == NULL) {
         perror("Error en malloc");
@@ -80,6 +81,30 @@ char* TransmutarLinea(FILE *archivoSRC, char *linea) {
     }
 
     return result;
+}
+//RuleEngine.h
+//Si el caracter no es valido lo escapa
+bool charValido(char c, char* string, size_t *len){
+    //Se ejecuta mientras lee la línea
+    //Manejar comillas dobles
+    if(c == '\''){
+        string[(*len)++] = '\\';
+        string[(*len)++] = '\'';
+        return false;
+    }
+    //Manejar comillas dobles
+    if(c == '"'){
+        string[(*len)++] = '\\';
+        string[(*len)++] = '\"';
+        return false;
+    }
+    //Manejar barra invertida
+    if(c == '\\'){
+        string[(*len)++] = '\\';
+        string[(*len)++] = '\\';
+        return false;
+    }
+    return true;
 }
 
 #endif

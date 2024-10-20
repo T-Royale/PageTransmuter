@@ -103,6 +103,15 @@ void ElegirHTML(){
         goto inicio;
     }
     HTML_ELEGIDO = SelectHTMLdocs(eleccion);
+    if(!TieneContenido(HTML_ELEGIDO)){
+        limpiar();
+        system("color c");
+        printf("El HTML elegido no tiene contenido\n");
+        Sleep(100);
+        printf("Seleciona otro\n");
+        Sleep(1000);
+        goto inicio;
+    }
 }
 //Messages.h
 //Decidir la ruta destino donde será creado el header

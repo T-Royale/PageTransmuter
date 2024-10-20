@@ -28,6 +28,6 @@ void AddDefine(FILE* stream, char* name){
 //HeaderCreation.h
 //Añadir el endif
 void AddEndif(FILE* stream){
-    fprintf(stream, "\n\n#endif");
+    fprintf(stream, "\n#endif");
 }
 #endif
