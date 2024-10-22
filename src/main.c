@@ -7,23 +7,26 @@
 #include "../include/HandleFiles.h"
 #include "../include/RuleEngine.h"
 //Debug:
-//Limpiar terminal al inicio
+//Limpiar terminal al inicio (ver advertencias)
 bool limpiarEnInicio = true;
+//Mostrar mensages de debug
+bool DebugMode = false;
 
 //Función principal:
 int main() {
     inicio(); //Menú de bienvenida, termina cuando empieza la TRANSMUTACIÓN
-    ElegirHTML(); //Pide al usuario que elija el HTML a transfusionar
+    ElegirHTML(); //Pide al usuario que elija el HTML a transmutar
     //La dirección del HTML orígen se almacena en HTML_ELEGIDO
     Rutas_t* rutaElegida = DecidirDestino();    //Decidir ubicación final
     char Nombre[20];    //Nombre del proyecto
     projectName(Nombre); //Guarda el nombre del proyecto
-    printf("El nombre del archivo es %s\n", Nombre);
-    printf("La ruta elegida es: %s\n", rutaElegida->path);
-    //La ejecución termina aquí//
     TransmutarHTML(rutaElegida->path, HTML_ELEGIDO, Nombre);
-    printf("=======================\nHa salido correctamente\n=======================");
     free(HTML_ELEGIDO);
     free(Rutas);
+    if(DebugMode){
+        printf("%s", final);
+        system("pause");
+    }
+    abrirRuta(rutaElegida->path);
     return 0;
 }

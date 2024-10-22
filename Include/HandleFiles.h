@@ -165,10 +165,14 @@ void pulirPath(char* string) {
 //HandleFiles.h
 //Comprueba si una dirección es valida
 bool rutaValida(char* ruta){
-        //Verificar si la ruta es valida
-        pulirPath(ruta);
-        //Si existe devuelve 0 (falso) al if
-        return (access(ruta, F_OK)) ? false : true;
+    //Formatea la ruta
+    pulirPath(ruta);
+    //comprobar si tiene espacios
+    for(int i = 0; i < strlen(ruta); i++){
+        if(ruta[i] == ' ') return false;
+    }
+    //Si existe devuelve 0 (falso) al if
+    return (access(ruta, F_OK)) ? false : true;
 }
 //HandleFiles.h
 //Quitar salto de linea (y espacios)
@@ -223,6 +227,12 @@ bool TieneContenido(char* ruta){
     fclose(archivo);
     return (c == EOF) ? false : true;
 }
-
+//HandleFiles.h
+//Inicia la ruta donde esta guardado el header
+void abrirRuta(char* ruta){
+    char msg[6 + MAX_PATH] = "start ";
+    snprintf(msg, sizeof(msg), "start %s", ruta);
+    system(msg);
+}
 
 #endif

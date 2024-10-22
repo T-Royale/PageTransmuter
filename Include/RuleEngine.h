@@ -30,6 +30,7 @@ void TransmutarHTML(char* dest, char* src, char* name){
     while ((RawLinea = leerLinea(HTML_FILE)) != NULL) {
         char* linea = TransmutarLinea(HTML_FILE, RawLinea);
         if (linea != NULL) {
+            //Será NULL cuando sea la última línea del documento
             fprintf(HeaderFile, "%s\n", linea);
             free(linea);  // Liberar memoria de la línea transmutada
         }
@@ -79,7 +80,7 @@ char* TransmutarLinea(FILE *archivoSRC, char *linea) {
         result = newResult;
         strcat(result, " \\");  // Añadir barra invertida y espacio
     }
-
+    //retorna la línea transmutada
     return result;
 }
 //RuleEngine.h

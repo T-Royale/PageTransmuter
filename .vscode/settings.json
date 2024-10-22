@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "saved_adresses.h": "c"
+        "saved_adresses.h": "c",
+        "ruleengine.h": "c",
+        "stdlib.h": "c",
+        "stdbool.h": "c"
     }
 }

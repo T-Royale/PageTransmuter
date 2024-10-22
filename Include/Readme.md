@@ -10,3 +10,5 @@
     El usuario las puede consultar desde el menú de inicio
 ### 4. RuleEngine.h:
     Funciones que tienen que ver con la conversión final del HTML a header
+### 5. HeaderCreation.h:
+    Tiene las funciones que le dan al header creado el formato de un header de C normal

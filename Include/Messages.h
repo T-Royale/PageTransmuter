@@ -10,6 +10,9 @@
 
 #include"../Include/HandleFiles.h"
 
+//Indica que el programa ha salido correctamente
+#define final "=======================\nHa salido correctamente\n======================="
+
 int masOpciones();
 void noHayRutas();
 
@@ -19,6 +22,7 @@ void limpiar(){
     system("cls");
     system("color a");
 }
+
 extern bool limpiarEnInicio;
 
 //Messages.h
@@ -47,7 +51,11 @@ int inicio(){
             case '2':
                 limpiar();
                 //Secuencia de explicación
-                instrucciones = fopen("../Include/Instrucciones.txt", "r");
+                instrucciones = fopen("../Program_files/Instrucciones.txt", "r");
+                if (instrucciones == NULL) {
+                    perror("Error al abrir el archivo de instrucciones");
+                    return -1;
+                }
                 while (fgets(linea, sizeof(linea), instrucciones) != NULL) {
                     printf("%s", linea); // Mostrar cada línea en la terminal
                     Sleep(500);
@@ -59,9 +67,12 @@ int inicio(){
                 case '1':
                     break;
                 case '2':
-                    system("start https://github.com/T-Royale");
+                    system("start ..\\HTML_AQUI\\");
                     break;
                 case '3':
+                    system("start https://github.com/T-Royale");
+                    break;
+                case '4':
                     CerrarPrograma();
                     break;
                 default:
@@ -113,6 +124,8 @@ void ElegirHTML(){
         goto inicio;
     }
 }
+
+extern bool DebugMode;
 //Messages.h
 //Decidir la ruta destino donde será creado el header
 Rutas_t* DecidirDestino(){
@@ -128,17 +141,19 @@ inicio:
     if(eleccion == nDirecciones) if(masOpciones() == 0) goto inicio;
     //si no se ha decidido crear ninguna ruta
     Rutas_t* rutaElegida = &Rutas[eleccion];
+    //Quitar solo salto de linea
     quitarSaltoLineaYEspacios(rutaElegida->path, false);
     //Comprobar si la ruta elegida existe
     if(!rutaValida(rutaElegida->path)){
         limpiar();
         system("color c");
-        printf("La ruta seleccionada no existe\n");
+        printf("La ruta seleccionada ya no es valida\n");
         Sleep(100);
         printf("Prueba otra vez\n");
-        Sleep(1000);
+        system("pause");
         goto inicio;
     }
+    if(DebugMode) printf("La ruta elegida es: %s\n", rutaElegida->path);
     return rutaElegida;
 }
 //HandleFiles.h
@@ -179,7 +194,8 @@ MasOpciones:
         else{
             limpiar();
             system("color 0c");  //rojo para indicar error
-            printf("La ruta %s no es valida\nAsegurate de que la ruta es un directorio valido \
+            printf("La ruta \"%s\" no es valida\nAsegurate de que la ruta es un directorio valido \
+            \nLas rutas con espacios no son validas, reemplazalos con guiones bajos \
             \nSi estas seguro ejecuta PageTransmuter como administrador\n",NuevaRuta.path);
             system("pause");
         }
@@ -207,12 +223,16 @@ MasOpciones:
         return 0;
     }
     else goto MasOpciones;
+    return 0;
 }
 void noHayRutas(){
     system("color c");
     printf("No se han encontrado rutas guardadas :(\nENTER: Crear una nueva\n");
     while(getchar() != '\n');
 }
+
+extern bool DebugMode;
+
 //Messages.h
 //Darle un nombre al proyecto
 void projectName(char* Nombre){
@@ -220,5 +240,6 @@ void projectName(char* Nombre){
     printf("Nuevo nombre del archivo:");
     fgets(Nombre, 20, stdin);
     quitarSaltoLineaYEspacios(Nombre, true);
+    if(DebugMode) printf("El nombre del archivo es %s\n", Nombre);
 }
 #endif
