@@ -5,8 +5,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
-#include<windows.h>
-#include<io.h>
 
 #include"../Include/HandleFiles.h"
 
@@ -58,7 +56,7 @@ int inicio(){
                 }
                 while (fgets(linea, sizeof(linea), instrucciones) != NULL) {
                     printf("%s", linea); // Mostrar cada línea en la terminal
-                    Sleep(500);
+                    usleep(500 * 1000);
                 }
                 // Cerrar el archivo
                 fclose(instrucciones);
@@ -110,7 +108,7 @@ void ElegirHTML(){
     if(eleccion > nArchivos - 1 || eleccion < 0){
         system("cls");
         printf("Numero no valido\nIntentalo otra vez\n");
-        Sleep(500);
+        usleep(500 * 1000);
         goto inicio;
     }
     HTML_ELEGIDO = SelectHTMLdocs(eleccion);
@@ -118,9 +116,9 @@ void ElegirHTML(){
         limpiar();
         system("color c");
         printf("El HTML elegido no tiene contenido\n");
-        Sleep(100);
+        usleep(100 * 1000);
         printf("Seleciona otro\n");
-        Sleep(1000);
+        usleep(1000 * 1000);
         goto inicio;
     }
 }
@@ -148,7 +146,7 @@ inicio:
         limpiar();
         system("color c");
         printf("La ruta seleccionada ya no es valida\n");
-        Sleep(100);
+        usleep(100 * 1000);
         printf("Prueba otra vez\n");
         system("pause");
         goto inicio;
@@ -187,7 +185,7 @@ MasOpciones:
         if(rutaValida(NuevaRuta.path)){
             limpiar();
             printf("Nuevo destino anadido con exito\n");
-            Sleep(1000);
+            usleep(1000 * 1000);
             CrearRuta(NuevaRuta);
             return 0;
         }

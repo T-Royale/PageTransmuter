@@ -17,7 +17,7 @@ char* leerLinea(FILE* dir);
 //RuleEngine.h
 //Lee el HTML y lo analiza
 void TransmutarHTML(char* dest, char* src, char* name){
-    char headerPath[MAX_PATH];  //Ruta del header
+    char headerPath[FILENAME_MAX];  //Ruta del header
     sprintf(headerPath, "%s/%s.h", dest, name);
     printf("%s\n", headerPath);
     FILE *HeaderFile = fopen(headerPath, "w");

@@ -6,8 +6,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<windows.h>
 #include<stdbool.h>
+#include<unistd.h>
+#include<dirent.h>
 
 #include "RuleEngine.h"
 
@@ -19,7 +20,7 @@ extern void limpiar();
 
 typedef struct Rutas_t{
     char nombre[20]; //Nombre de la ubicación
-    char path[MAX_PATH];   //Dirección que guarda
+    char path[FILENAME_MAX];   //Dirección que guarda
 } Rutas_t;
 
 //Número de direcciones
@@ -56,7 +57,7 @@ void MostrarRutasGuardadas() {
     LeerRutas();
     for(int i = 0; i < nDirecciones; i++){
         printf("%d- %s", i,Rutas[i].nombre);
-        Sleep(250);
+        usleep(250 * 1000);
     }
 }
 
@@ -101,57 +102,64 @@ void BorrarRuta(int pos){
 //HandleFiles.h
 //Muestra los documentos HTML en la carpeta
 //Devuelve el número de archivos encontrados
-int MostrarHTMLdocs(){
-    WIN32_FIND_DATA findFile;
-    char rutaBusqueda[MAX_PATH];
+int MostrarHTMLdocs() {
+    DIR *dir;
+    struct dirent *entry;
     int i = 0;
 
-    sprintf(rutaBusqueda, "%s*.html", HTML_DIR); // Usar rutaBusqueda correctamente
-
-    HANDLE hFind = FindFirstFile(rutaBusqueda, &findFile); // Corregido aquí
-
-
-    if(hFind == INVALID_HANDLE_VALUE){
+    // Abre el directorio HTML_DIR
+    dir = opendir(HTML_DIR);
+    if (dir == NULL) {
+        perror("No se pudo abrir el directorio HTML_DIR");
         return -1;
     }
-    do {
-        const char* nombreArchivo = findFile.cFileName;
-        printf("%d- %s\n", i, nombreArchivo);
-        i++;
-    } while(FindNextFile(hFind, &findFile) != 0);
 
-    FindClose(hFind);
+    // Lee cada archivo en el directorio
+    while ((entry = readdir(dir)) != NULL) {
+        // Verifica si el archivo tiene la extensión .html
+        if (strstr(entry->d_name, ".html") != NULL) {
+            printf("%d- %s\n", i, entry->d_name);
+            i++;
+        }
+    }
+
+    closedir(dir);
     return i;
 }
+
 //Handlefiles.h
 //Devuelve la cadena de la ruta en la posición (pos)
 char *SelectHTMLdocs(int pos) {
-    WIN32_FIND_DATA findFile;
-    char rutaBusqueda[MAX_PATH];
+    DIR *dir;
+    struct dirent *entry;
+    int i = 0;
+    char *rutaCompleta = NULL;
 
-    sprintf(rutaBusqueda, "%s*.html", HTML_DIR);
-    HANDLE hFind = FindFirstFile(rutaBusqueda, &findFile);
-
-    if (hFind == INVALID_HANDLE_VALUE) return NULL; // Manejo de errores
-
-    char* nombreArchivo = NULL;
-
-    for (int i = 0; i <= pos; i++) {
-        if (i == pos) {
-            nombreArchivo = malloc(strlen(findFile.cFileName) + 1);
-            strcpy(nombreArchivo, findFile.cFileName);
-            break; // Encontramos el archivo
-        }
-        FindNextFile(hFind, &findFile); // Avanzar al siguiente
+    // Abre el directorio HTML_DIR
+    dir = opendir(HTML_DIR);
+    if (dir == NULL) {
+        perror("No se pudo abrir el directorio HTML_DIR");
+        return NULL;
     }
 
-    FindClose(hFind);
-    char* rutaCompleta = malloc(MAX_PATH);
-    sprintf(rutaCompleta, "%s\\%s", HTML_DIR, nombreArchivo);
+    // Lee cada archivo en el directorio
+    while ((entry = readdir(dir)) != NULL) {
+        // Verifica si el archivo tiene la extensión .html
+        if (strstr(entry->d_name, ".html") != NULL) {
+            if (i == pos) {
+                // Asigna memoria para la ruta completa
+                rutaCompleta = malloc(strlen(HTML_DIR) + strlen(entry->d_name) + 2);
+                if (rutaCompleta != NULL) {
+                    sprintf(rutaCompleta, "%s%s", HTML_DIR, entry->d_name);
+                }
+                break; // Encontramos el archivo en la posición deseada
+            }
+            i++;
+        }
+    }
 
-    free(nombreArchivo);
-
-    return rutaCompleta; // devolver la ruta completa
+    closedir(dir);
+    return rutaCompleta; // Devuelve la ruta completa del archivo en la posición pos
 }
 //HandleFiles.h
 //Cambia los "\" por "/" y quita un salto de línea
@@ -230,7 +238,7 @@ bool TieneContenido(char* ruta){
 //HandleFiles.h
 //Inicia la ruta donde esta guardado el header
 void abrirRuta(char* ruta){
-    char msg[6 + MAX_PATH] = "start ";
+    char msg[6 + FILENAME_MAX] = "start ";
     snprintf(msg, sizeof(msg), "start %s", ruta);
     system(msg);
 }
