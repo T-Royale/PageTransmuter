@@ -3,6 +3,8 @@
         "saved_adresses.h": "c",
         "ruleengine.h": "c",
         "stdlib.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "handlefiles.h": "c",
+        "functions.h": "c"
     }
 }
