@@ -3,9 +3,7 @@
 #include<stdlib.h>
 #include<stdbool.h>
 //Headers del programa
-#include "../include/Messages.h"
-#include "../include/HandleFiles.h"
-#include "../include/RuleEngine.h"
+#include "Include/Functions.h"
 //Debug:
 //Limpiar terminal al inicio (ver advertencias)
 bool limpiarEnInicio = true;
