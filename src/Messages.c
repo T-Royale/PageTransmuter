@@ -8,11 +8,16 @@
 int masOpciones();
 void noHayRutas();
 
+//Codigos de colores terminal linux
+#define BASH_COLOR_VERDE "tput setaf 2"
+#define BASH_COLOR_ROJO "tput setaf 1"
+#define BASH_COLOR_RESET "tput sgr0"
+
 //Messages.h
 //Limpiar la pantalla
 void limpiar(){
-    system("cls");
-    system("color a");
+    system("clear");
+    system(BASH_COLOR_VERDE);
 }
 
 extern bool limpiarEnInicio;
@@ -59,10 +64,10 @@ int inicio(){
                 case '1':
                     break;
                 case '2':
-                    system("start ..\\HTML_AQUI\\");
+                    system("xdg-open ../HTML_AQUI/");
                     break;
                 case '3':
-                    system("start https://github.com/T-Royale");
+                    system("xdg-open https://github.com/T-Royale");
                     break;
                 case '4':
                     CerrarPrograma();
@@ -100,7 +105,7 @@ void ElegirHTML(){
     int eleccion = 0; //Archivo elegido
     scanf("%d", &eleccion);
     if(eleccion > nArchivos - 1 || eleccion < 0){
-        system("cls");
+        system("clear");
         printf("Numero no valido\nIntentalo otra vez\n");
         usleep(500 * 1000);
         goto inicio;
@@ -108,7 +113,7 @@ void ElegirHTML(){
     HTML_ELEGIDO = SelectHTMLdocs(eleccion);
     if(!TieneContenido(HTML_ELEGIDO)){
         limpiar();
-        system("color c");
+        system(BASH_COLOR_ROJO);
         printf("El HTML elegido no tiene contenido\n");
         usleep(100 * 1000);
         printf("Seleciona otro\n");
@@ -138,11 +143,12 @@ inicio:
     //Comprobar si la ruta elegida existe
     if(!rutaValida(rutaElegida->path)){
         limpiar();
-        system("color c");
+        system("BASH_COLOR_ROJO");
         printf("La ruta seleccionada ya no es valida\n");
         usleep(100 * 1000);
         printf("Prueba otra vez\n");
-        system("pause");
+        printf("Pulsa ENTER para continuar");
+        while(getchar() != '\n');
         goto inicio;
     }
     if(DebugMode) printf("La ruta elegida es: %s\n", rutaElegida->path);
@@ -189,7 +195,8 @@ MasOpciones:
             printf("La ruta \"%s\" no es valida\nAsegurate de que la ruta es un directorio valido \
             \nLas rutas con espacios no son validas, reemplazalos con guiones bajos \
             \nSi estas seguro ejecuta PageTransmuter como administrador\n",NuevaRuta.path);
-            system("pause");
+            printf("Pulsa ENTER para continuar\n");
+            while(getchar() != '\n');
         }
     }
     //Borrar ruta
@@ -214,11 +221,12 @@ MasOpciones:
     else if(ans == 3){
         return 0;
     }
+    //Sino vuelve al principio
     else goto MasOpciones;
     return 0;
 }
 void noHayRutas(){
-    system("color c");
+    system("BASH_COLOR_ROJO");
     printf("No se han encontrado rutas guardadas :(\nENTER: Crear una nueva\n");
     while(getchar() != '\n');
 }

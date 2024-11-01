@@ -230,7 +230,7 @@ bool TieneContenido(char* ruta){
 //HandleFiles.h
 //Inicia la ruta donde esta guardado el header
 void abrirRuta(char* ruta){
-    char msg[6 + FILENAME_MAX] = "start ";
-    snprintf(msg, sizeof(msg), "start %s", ruta);
+    char msg[6 + FILENAME_MAX];
+    snprintf(msg, sizeof(msg), "xdg-open \"%s\"", ruta);
     system(msg);
 }
