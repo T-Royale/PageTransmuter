@@ -191,7 +191,7 @@ MasOpciones:
         }
         else{
             limpiar();
-            system("color 0c");  //rojo para indicar error
+            system(BASH_COLOR_ROJO);  //rojo para indicar error
             printf("La ruta \"%s\" no es valida\nAsegurate de que la ruta es un directorio valido \
             \nLas rutas con espacios no son validas, reemplazalos con guiones bajos \
             \nSi estas seguro ejecuta PageTransmuter como administrador\n",NuevaRuta.path);
@@ -226,7 +226,7 @@ MasOpciones:
     return 0;
 }
 void noHayRutas(){
-    system("BASH_COLOR_ROJO");
+    system(BASH_COLOR_ROJO);
     printf("No se han encontrado rutas guardadas :(\nENTER: Crear una nueva\n");
     while(getchar() != '\n');
 }
@@ -237,7 +237,6 @@ extern bool DebugMode;
 //Darle un nombre al proyecto
 void projectName(char* Nombre){
     limpiar();
-    printf("Nuevo nombre del archivo:");
     fgets(Nombre, 20, stdin);
     quitarSaltoLineaYEspacios(Nombre, true);
     if(DebugMode) printf("El nombre del archivo es %s\n", Nombre);

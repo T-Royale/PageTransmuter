@@ -11,7 +11,7 @@ bool limpiarEnInicio = true;
 bool DebugMode = false;
 
 //Función principal:
-int main() {
+int main(int argc, char *argv[]) {
     inicio(); //Menú de bienvenida, termina cuando empieza la TRANSMUTACIÓN
     ElegirHTML(); //Pide al usuario que elija el HTML a transmutar
     //La dirección del HTML orígen se almacena en HTML_ELEGIDO

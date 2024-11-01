@@ -1,18 +1,34 @@
 # gcc -o PageTransmuter main.c HandleFiles.c HeaderCreation.c Messages.c RuleEngine.c
-# Directorios y archivos
+# Variables
+SRCDIR = src
+INCLUDEDIR = $(SRCDIR)/Include
+OUTDIR = PageTransmuter
+BINDIR = $(OUTDIR)/PageTransmuter
+PROGRAM = PageTransmuter
 SRCS = main.c HandleFiles.c HeaderCreation.c Messages.c RuleEngine.c
-LIB = Include/Functions.h
 
-# Nombre del ejecutable
-TARGET = PageTransmuter
+CC = gcc
+CFLAGS = -I$(INCLUDEDIR)
 
-# Objetivo predeterminado para compilar
-all: $(TARGET)
+# Regla por defecto
+all: $(BINDIR)/$(PROGRAM)
 
-# Compilar el ejecutable
-$(TARGET): $(SRCS) $(LIB)
-	gcc -o $(TARGET) $(SRCS)
+# Compilación del programa
+$(BINDIR)/$(PROGRAM): $(addprefix $(SRCDIR)/, $(SRCS)) | prepare
+	$(CC) $(CFLAGS) $^ -o $@
+
+# Preparación de directorios y copiado de carpetas y archivos
+prepare:
+	# Crear directorios necesarios
+	mkdir -p $(BINDIR)
+	# Copiar Program_files sin run.txt
+	mkdir -p $(OUTDIR)/Program_files
+	rsync -av --exclude='run.txt' Program_files/ $(OUTDIR)/Program_files/
+	# Copiar run.txt al directorio del binario
+	cp Program_files/run.txt $(BINDIR)/
+	# Copiar HTML_AQUI al directorio de salida
+	cp -r HTML_AQUI $(OUTDIR)/
 
 # Limpiar archivos generados
 clean:
-	rm -f $(TARGET)
+	rm -rf $(OUTDIR)
