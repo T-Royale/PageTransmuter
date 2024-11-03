@@ -1,14 +1,7 @@
 //Definiciones y funciones que tienen que ver con interactuar con el usuario a través de la terminal
-#ifndef MENSAJES_H
-#define MENSAJES_H
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include<windows.h>
-#include<io.h>
-
-#include"../Include/HandleFiles.h"
+//Funciones del codigo
+#include "Include/Functions.h"
 
 //Indica que el programa ha salido correctamente
 #define final "=======================\nHa salido correctamente\n======================="
@@ -242,4 +235,3 @@ void projectName(char* Nombre){
     quitarSaltoLineaYEspacios(Nombre, true);
     if(DebugMode) printf("El nombre del archivo es %s\n", Nombre);
 }
-#endif

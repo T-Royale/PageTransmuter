@@ -1,14 +1,6 @@
 //Funciones para crear el heather
-#ifndef CREATE_HEADER_H
-#define CREATE_HEADER_H
+#include "Include/Functions.h"
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include<ctype.h>
-#include<string.h>
-
-#include"RuleEngine.h"
 //HeaderCreation.h
 //Añadir el #ifndef ... #define ...
 void AddIfndefDefine(FILE* stream, char* name){
@@ -30,4 +22,3 @@ void AddDefine(FILE* stream, char* name){
 void AddEndif(FILE* stream){
     fprintf(stream, "\n#endif");
 }
-#endif

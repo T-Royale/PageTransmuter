@@ -1,16 +1,8 @@
 //Aquí irá el proceso de1 adaptar el codigo HTML a un header de C++
-#ifndef RULE_ENGINE_H
-#define RULE_ENGINE_H
-//Librerías de C
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include<ctype.h>
-#include<string.h>
+
 //Cabeceras del proyecto
-#include "../include/Messages.h"
-#include "../include/HandleFiles.h"
-#include "HeaderCreation.h"
+#include "Include/Functions.h"
+
 //Firmas de funciones
 char* TransmutarLinea(FILE *archivoSRC, char *linea);
 char* leerLinea(FILE* dir);
@@ -107,5 +99,3 @@ bool charValido(char c, char* string, size_t *len){
     }
     return true;
 }
-
-#endif

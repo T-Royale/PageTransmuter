@@ -1,26 +1,11 @@
 //Aquí irán las funciones que tendrán que ver con acceder a otras direcciones
-#ifndef HANDLE_FILES_H
-#define HANDLE_FILES_H
-#include "Messages.h"
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<windows.h>
-#include<stdbool.h>
-
-#include "RuleEngine.h"
+#include "Include/Functions.h"
 
 #define HTML_DIR "../HTML_AQUI/"
 
 #define Saved_adr "../Program_files/Saved_adresses.bin"
 
 extern void limpiar();
-
-typedef struct Rutas_t{
-    char nombre[20]; //Nombre de la ubicación
-    char path[MAX_PATH];   //Dirección que guarda
-} Rutas_t;
 
 //Número de direcciones
 int nDirecciones = 0;
@@ -234,5 +219,3 @@ void abrirRuta(char* ruta){
     snprintf(msg, sizeof(msg), "start %s", ruta);
     system(msg);
 }
-
-#endif

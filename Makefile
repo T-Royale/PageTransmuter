@@ -1,42 +1,85 @@
-# Nombre del ejecutable
-EXECUTABLE = PageTransmuter.exe
+# Makefile para PageTransmuter en Windows
 
-# Directorios
-SRC_DIR = src
-INC_DIR = Include
-PROG_FILES_DIR = Program_files
-HTML_DIR = HTML_AQUI
-DEST_DIR = PageTransmuter
-BIN_DIR = $(DEST_DIR)\PageTransmuter
+# Variables
+SRCDIR = src
+INCLUDEDIR = $(SRCDIR)/Include
+BUILDDIR = PageTransmuter
+HTMLSRC = HTML_AQUI
+HTMLDEST = $(BUILDDIR)/HTML_AQUI
+PROGSRC = Program_files
+PROGDEST = $(BUILDDIR)/Program_files
+BINDIR = $(BUILDDIR)/PageTransmuter
+EXE = PageTransmuter.exe
 
-# Archivo fuente
-SRC = main.c
+# Lista de archivos fuente
+SOURCES = main.c HandleFiles.c Messages.c RuleEngine.c HeaderCreation.c
 
-# Flags de compilación
-CFLAGS = -Wall -I..\Include
+# Lista de archivos objeto con rutas completas
+OBJECTS = \
+	$(BINDIR)/main.o \
+	$(BINDIR)/HandleFiles.o \
+	$(BINDIR)/Messages.o \
+	$(BINDIR)/RuleEngine.o \
+	$(BINDIR)/HeaderCreation.o
 
-# Comando para el compilador
+# Compilador y flags
 CC = gcc
+CFLAGS = -Wall -I$(INCLUDEDIR)
+
+# Ver comandos
+all:
+	@echo Lista de comandos make
+	@echo 	make build: Construir proyecto
+	@echo 	make clean: Limpiar archivos generados por build
+	@echo 	make RemoveOBJS: Eliminar archivos objeto .o
 
 # Regla por defecto
-all: $(BIN_DIR)\$(EXECUTABLE)
+build: $(BINDIR)/$(EXE)
 
-# Regla para crear el ejecutable y preparar los directorios
-$(BIN_DIR)\$(EXECUTABLE): $(SRC_DIR)\$(SRC)
-	@echo Creando directorios...
-	@if not exist "$(DEST_DIR)" mkdir "$(DEST_DIR)"
-	@if not exist "$(BIN_DIR)" mkdir "$(BIN_DIR)"
-	@echo Copiando Program_files...
-	xcopy /s /e /i "$(PROG_FILES_DIR)\*" "$(DEST_DIR)\$(PROG_FILES_DIR)\"
-	@echo Copiando Include...
-	xcopy /s /e /i "$(INC_DIR)\*" "$(DEST_DIR)\$(INC_DIR)\"
-	@echo Copiando HTML_AQUI...
-	xcopy /s /e /i "$(HTML_DIR)\*" "$(DEST_DIR)\$(HTML_DIR)\"
-	@echo Compilando el ejecutable...
-	cd $(SRC_DIR) && \
-	$(CC) $(CFLAGS) -o "..\$(BIN_DIR)\$(EXECUTABLE)" $(SRC)
-	@echo Compilación completada.
+# Crear el directorio principal de compilación
+$(BUILDDIR):
+	if not exist "$(BUILDDIR)" mkdir "$(BUILDDIR)"
 
-# Regla de limpieza
+# Copiar el contenido de HTML_AQUI
+$(HTMLDEST): $(BUILDDIR)
+	if not exist "$(HTMLDEST)" mkdir "$(HTMLDEST)"
+	xcopy /E /I /Y "$(HTMLSRC)\*" "$(HTMLDEST)\"
+
+# Copiar el contenido de Program_files
+$(PROGDEST): $(BUILDDIR)
+	if not exist "$(PROGDEST)" mkdir "$(PROGDEST)"
+	xcopy /E /I /Y "$(PROGSRC)\*" "$(PROGDEST)\"
+
+# Crear el directorio para el ejecutable y objetos
+$(BINDIR): $(BUILDDIR)
+	if not exist "$(BINDIR)" mkdir "$(BINDIR)"
+
+# Reglas para compilar cada archivo objeto
+$(BINDIR)/main.o: $(SRCDIR)/main.c $(INCLUDEDIR)/Functions.h | $(BINDIR)
+	$(CC) $(CFLAGS) -c "$(SRCDIR)/main.c" -o "$(BINDIR)/main.o"
+
+$(BINDIR)/HandleFiles.o: $(SRCDIR)/HandleFiles.c $(INCLUDEDIR)/Functions.h | $(BINDIR)
+	$(CC) $(CFLAGS) -c "$(SRCDIR)/HandleFiles.c" -o "$(BINDIR)/HandleFiles.o"
+
+$(BINDIR)/Messages.o: $(SRCDIR)/Messages.c $(INCLUDEDIR)/Functions.h | $(BINDIR)
+	$(CC) $(CFLAGS) -c "$(SRCDIR)/Messages.c" -o "$(BINDIR)/Messages.o"
+
+$(BINDIR)/RuleEngine.o: $(SRCDIR)/RuleEngine.c $(INCLUDEDIR)/Functions.h | $(BINDIR)
+	$(CC) $(CFLAGS) -c "$(SRCDIR)/RuleEngine.c" -o "$(BINDIR)/RuleEngine.o"
+
+$(BINDIR)/HeaderCreation.o: $(SRCDIR)/HeaderCreation.c $(INCLUDEDIR)/Functions.h | $(BINDIR)
+	$(CC) $(CFLAGS) -c "$(SRCDIR)/HeaderCreation.c" -o "$(BINDIR)/HeaderCreation.o"
+
+# Enlazar los objetos para crear el ejecutable
+$(BINDIR)/$(EXE): $(OBJECTS) $(HTMLDEST) $(PROGDEST)
+	$(CC) $(CFLAGS) $(OBJECTS) -o "$(BINDIR)/$(EXE)"
+
+# Limpiar los archivos generados
 clean:
-	rd /s /q "$(DEST_DIR)"
+	if exist "$(BUILDDIR)" rd /S /Q "$(BUILDDIR)"
+
+# Limpiar objetos generados
+RemoveOBJS:
+	if exist "PageTransmuter\PageTransmuter" del /Q "PageTransmuter\PageTransmuter\*.o"
+
+.PHONY: all clean
