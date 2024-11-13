@@ -167,7 +167,7 @@ MasOpciones:
     while(getchar() != '\n');
     //Añadir ruta
     if(ans == 1){
-    AñadirRuta:
+    AnadirRuta:
         limpiar();
         Rutas_t NuevaRuta;
 
@@ -180,7 +180,7 @@ MasOpciones:
         char ans = getchar();
         while(getchar() != '\n');
         if(ans == 'n' || ans == 'N'){
-            goto AñadirRuta;
+            goto AnadirRuta;
         }
         if(rutaValida(NuevaRuta.path)){
             limpiar();
@@ -203,7 +203,7 @@ MasOpciones:
     else if(ans == 2){
         if(nDirecciones == 0){
             noHayRutas();
-            goto AñadirRuta;
+            goto AnadirRuta;
         }
         int eliminar;
         limpiar();
@@ -214,7 +214,7 @@ MasOpciones:
         BorrarRuta(eliminar);
         if(nDirecciones == 0){
             noHayRutas();
-            goto AñadirRuta;
+            goto AnadirRuta;
         }
         return 0;
     }

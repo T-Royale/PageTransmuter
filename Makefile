@@ -23,7 +23,7 @@ prepare:
 	mkdir -p $(BINDIR)
 	# Copiar Program_files sin run.txt
 	mkdir -p $(OUTDIR)/Program_files
-	rsync -av --exclude='run.txt' Program_files/ $(OUTDIR)/Program_files/
+	rsync -av Program_files/ $(OUTDIR)/Program_files/
 	# Copiar run.txt al directorio del binario
 	cp Program_files/run.txt $(BINDIR)/
 	# Copiar HTML_AQUI al directorio de salida
