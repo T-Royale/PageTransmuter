@@ -1,28 +1,27 @@
-//Librerías de C
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include<stdio.h>
-#include<ctype.h>
-#include<string.h>
-#include<windows.h>
-#include<io.h>
 //Headers del programa
 #include "Include/Functions.h"
-//Debug:
-//Limpiar terminal al inicio (ver advertencias)
+// Variables globales
 bool limpiarEnInicio = true;
-//Mostrar mensages de debug
 bool DebugMode = false;
-
+char* HTML_ELEGIDO = NULL;
+int nDirecciones = 0;
+Rutas_t *Rutas = NULL;
+bool LowLevelHTML = false;
+bool hppFile = false;
+bool LookforCSS = false;
+bool ayuda = false;
+int nLineas = 0;
 //Función principal:
-int main() {
+int main(int argc, char *argv[]) {
+    LeerRutas();
+    verificarArchivos();//Verifica los archivos del programa
+    ComprobarArgumentos(argc, argv);
     inicio(); //Menú de bienvenida, termina cuando empieza la TRANSMUTACIÓN
     ElegirHTML(); //Pide al usuario que elija el HTML a transmutar
     //La dirección del HTML orígen se almacena en HTML_ELEGIDO
     Rutas_t* rutaElegida = DecidirDestino();    //Decidir ubicación final
-    char Nombre[20];    //Nombre del proyecto
-    projectName(Nombre); //Guarda el nombre del proyecto
+    char Nombre[50];    //Nombre del proyecto
+    projectName(Nombre, sizeof(Nombre)); //Guarda el nombre del proyecto
     TransmutarHTML(rutaElegida->path, HTML_ELEGIDO, Nombre);
     free(HTML_ELEGIDO);
     free(Rutas);

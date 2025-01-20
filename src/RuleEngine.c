@@ -3,24 +3,24 @@
 //Cabeceras del proyecto
 #include "Include/Functions.h"
 
-//Firmas de funciones
-char* TransmutarLinea(FILE *archivoSRC, char *linea);
-char* leerLinea(FILE* dir);
 //RuleEngine.h
 //Lee el HTML y lo analiza
 void TransmutarHTML(char* dest, char* src, char* name){
     char headerPath[MAX_PATH];  //Ruta del header
-    sprintf(headerPath, "%s/%s.h", dest, name);
+    if(hppFile) snprintf(headerPath, sizeof(headerPath), "%s/%s.hpp", dest, name);
+    else snprintf(headerPath, sizeof(headerPath), "%s/%s.h", dest, name);
     printf("%s\n", headerPath);
     FILE *HeaderFile = fopen(headerPath, "w");
     AddIfndefDefine(HeaderFile, name);
     AddDefine(HeaderFile, name);
+    LowLevelHeader(HeaderFile);
 
     FILE *HTML_FILE = fopen(src, "r");
     char *RawLinea = NULL;  //Línea recién leida
 
     while ((RawLinea = leerLinea(HTML_FILE)) != NULL) {
         char* linea = TransmutarLinea(HTML_FILE, RawLinea);
+        nLineas++;
         if (linea != NULL) {
             //Será NULL cuando sea la última línea del documento
             fprintf(HeaderFile, "%s\n", linea);
@@ -49,7 +49,7 @@ bool esUltimaLinea(FILE *archivo) {
 //RuleEngine.h
 //Añade comillas y barra invertida a la cadena
 char* TransmutarLinea(FILE *archivoSRC, char *linea) {
-    size_t len = strlen(linea) + 3;  // Espacio para las comillas y el '\0'
+    size_t len = strlen(linea) + 7;  // Espacio para las comillas, el '\0' y el \r\n
     char* result = malloc(len * sizeof(char));
     if (result == NULL) {
         perror("Error en malloc");
@@ -57,11 +57,13 @@ char* TransmutarLinea(FILE *archivoSRC, char *linea) {
     }
 
     // Formatear la línea con comillas
-    sprintf(result, "\"%s\"", linea);
+    snprintf(result, len,"\"%s\\r\\n\"", linea);
 
     // Si no es la última línea, añadir barra invertida y espacio
-    if (!esUltimaLinea(archivoSRC)) {
-        len += 3;  // Para el espacio, la barra invertida y el null terminator
+    bool UltimaLinea = esUltimaLinea(archivoSRC);
+    if (!UltimaLinea) {
+        // Para el espacio, la barra invertida, el null terminator y la última línea en caso de ser lowlevel
+        len += (LowLevelHTML) ? 5 : 3;  
         char* newResult = realloc(result, len * sizeof(char));
         if (newResult == NULL) {
             perror("Error en realloc");
@@ -70,8 +72,9 @@ char* TransmutarLinea(FILE *archivoSRC, char *linea) {
         }
 
         result = newResult;
-        strcat(result, " \\");  // Añadir barra invertida y espacio
+        strncat(result, " \\", len);  // Añadir barra invertida y espacio
     }
+    else if(LowLevelHTML) strncat(result, " \\\n", len);
     //retorna la línea transmutada
     return result;
 }

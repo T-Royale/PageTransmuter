@@ -8,7 +8,7 @@ HTMLSRC = HTML_AQUI
 HTMLDEST = $(BUILDDIR)/HTML_AQUI
 PROGSRC = Program_files
 PROGDEST = $(BUILDDIR)/Program_files
-BINDIR = $(BUILDDIR)/PageTransmuter
+BINDIR = $(BUILDDIR)
 EXE = PageTransmuter.exe
 
 # Lista de archivos fuente
@@ -29,7 +29,7 @@ CFLAGS = -Wall -I$(INCLUDEDIR)
 # Ver comandos
 all:
 	@echo Lista de comandos make
-	@echo 	make build: Construir proyecto
+	@echo 	make build: Generar objetos y compilar
 	@echo 	make clean: Limpiar archivos generados por build
 	@echo 	make RemoveOBJS: Eliminar archivos objeto .o
 
@@ -80,6 +80,6 @@ clean:
 
 # Limpiar objetos generados
 RemoveOBJS:
-	if exist "PageTransmuter\PageTransmuter" del /Q "PageTransmuter\PageTransmuter\*.o"
+	if exist $(BINDIR) del /Q $(BINDIR)\*.o"
 
 .PHONY: all clean

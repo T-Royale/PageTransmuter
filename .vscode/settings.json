@@ -4,5 +4,6 @@
         "ruleengine.h": "c",
         "stdlib.h": "c",
         "stdbool.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }
