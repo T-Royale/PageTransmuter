@@ -1,4 +1,4 @@
-//Cabeceras del proyecto
+//Headers del programa
 #include "Include/Functions.h"
 
 //RuleEngine.h

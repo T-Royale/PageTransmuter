@@ -17,7 +17,7 @@
 // Estructura de rutas
 typedef struct {
     char nombre[50];     // Nombre de la ubicación
-    char path[MAX_PATH]; // Dirección que guarda
+    char path[FILENAME_MAX]; // Dirección que guarda
 } Rutas_t;
 
 // Macros
@@ -25,6 +25,7 @@ typedef struct {
 #define HTML_DIR "HTML_AQUI/"
 #define Saved_adr "Program_files/Saved_adresses.bin"
 #define Instrucciones_adr "Program_files/Instrucciones.bin"
+#define MAX_NAME_LEN 20
 
 // Variables globales (en main.c)
 extern bool limpiarEnInicio;

@@ -6,6 +6,11 @@ bool DebugMode = false;
 Rutas_t *Rutas = NULL;
 int nDirecciones = 0;
 char* HTML_ELEGIDO = NULL;
+bool LowLevelHTML = false;
+bool hppFile = false;
+bool LookforCSS = false;
+bool ayuda = false;
+int nLineas = false;
 
 //Función principal:
 int main(int argc, char *argv[]) {
@@ -13,8 +18,8 @@ int main(int argc, char *argv[]) {
     ElegirHTML(); //Pide al usuario que elija el HTML a transmutar
     //La dirección del HTML orígen se almacena en HTML_ELEGIDO
     Rutas_t* rutaElegida = DecidirDestino();    //Decidir ubicación final
-    char Nombre[20];    //Nombre del proyecto
-    projectName(Nombre); //Guarda el nombre del proyecto
+    char Nombre[MAX_NAME_LEN];    //Nombre del proyecto
+    projectName(Nombre, MAX_NAME_LEN); //Guarda el nombre del proyecto
     TransmutarHTML(rutaElegida->path, HTML_ELEGIDO, Nombre);
     free(HTML_ELEGIDO);
     free(Rutas);
