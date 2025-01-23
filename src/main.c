@@ -1,14 +1,11 @@
-//Librerías de C
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
 //Headers del programa
 #include "Include/Functions.h"
-//Debug:
-//Limpiar terminal al inicio (ver advertencias)
+// Variables globales
 bool limpiarEnInicio = true;
-//Mostrar mensages de debug
 bool DebugMode = false;
+Rutas_t *Rutas = NULL;
+int nDirecciones = 0;
+char* HTML_ELEGIDO = NULL;
 
 //Función principal:
 int main(int argc, char *argv[]) {

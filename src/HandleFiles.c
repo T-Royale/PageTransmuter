@@ -1,27 +1,4 @@
-//Aquí irán las funciones que tendrán que ver con acceder a otras direcciones
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<stdbool.h>
-#include<unistd.h>
-#include<dirent.h>
-
 #include "Include/Functions.h"
-
-#define HTML_DIR "../HTML_AQUI/"
-
-#define Saved_adr "../Program_files/Saved_adresses.bin"
-
-extern void limpiar();
-
-//Número de direcciones
-int nDirecciones = 0;
-
-//HandleFiles.h
-//Array global de rutas
-Rutas_t *Rutas = NULL;
-
-extern char* HTML_ELEGIDO;
 
 //HandleFiles.h
 //Termina el programa de forma segura

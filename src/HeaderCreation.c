@@ -1,10 +1,3 @@
-//Funciones para crear el heather
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include<ctype.h>
-#include<string.h>
-
 #include "Include/Functions.h"
 
 //HeaderCreation.h

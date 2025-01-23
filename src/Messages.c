@@ -1,17 +1,4 @@
-//Definiciones y funciones que tienen que ver con interactuar con el usuario a través de la terminal
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-
 #include "Include/Functions.h"
-
-int masOpciones();
-void noHayRutas();
-
-//Codigos de colores terminal linux
-#define BASH_COLOR_VERDE "tput setaf 2"
-#define BASH_COLOR_ROJO "tput setaf 1"
-#define BASH_COLOR_RESET "tput sgr0"
 
 //Messages.h
 //Limpiar la pantalla
@@ -19,8 +6,6 @@ void limpiar(){
     system("clear");
     system(BASH_COLOR_VERDE);
 }
-
-extern bool limpiarEnInicio;
 
 //Messages.h
 //Mensajes y opciones de inicio
@@ -89,8 +74,6 @@ int inicio(){
     return 0;
 }
 
-char* HTML_ELEGIDO = NULL;
-
 //Messages.h
 //Elegir doucumento HTML a transfusionar
 void ElegirHTML(){
@@ -122,7 +105,6 @@ void ElegirHTML(){
     }
 }
 
-extern bool DebugMode;
 //Messages.h
 //Decidir la ruta destino donde será creado el header
 Rutas_t* DecidirDestino(){
