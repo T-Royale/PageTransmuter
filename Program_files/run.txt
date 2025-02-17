@@ -1,3 +1,0 @@
-Para iniciar PageTransmuter:
-1. Abre una terminal en esta ubicación
-2. Ejecuta: ./PageTransmuter

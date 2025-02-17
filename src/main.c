@@ -10,10 +10,13 @@ bool LowLevelHTML = false;
 bool hppFile = false;
 bool LookforCSS = false;
 bool ayuda = false;
-int nLineas = false;
+int nLineas = 0; 
 
-//Función principal:
+//Función principal: 
 int main(int argc, char *argv[]) {
+    verificarArchivos();
+    LeerRutas();
+    ComprobarArgumentos(argc, argv);
     inicio(); //Menú de bienvenida, termina cuando empieza la TRANSMUTACIÓN
     ElegirHTML(); //Pide al usuario que elija el HTML a transmutar
     //La dirección del HTML orígen se almacena en HTML_ELEGIDO

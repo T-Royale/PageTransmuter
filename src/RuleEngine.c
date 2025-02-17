@@ -5,16 +5,18 @@
 //Lee el HTML y lo analiza
 void TransmutarHTML(char* dest, char* src, char* name){
     char headerPath[FILENAME_MAX];  //Ruta del header
-    sprintf(headerPath, "%s/%s.h", dest, name);
+    sprintf(headerPath, (hppFile) ? "%s/%s.hpp" : "%s/%s.h", dest, name);
     printf("%s\n", headerPath);
     FILE *HeaderFile = fopen(headerPath, "w");
     AddIfndefDefine(HeaderFile, name);
     AddDefine(HeaderFile, name);
+    LowLevelHeader(HeaderFile);
 
     FILE *HTML_FILE = fopen(src, "r");
     char *RawLinea = NULL;  //Línea recién leida
 
     while ((RawLinea = leerLinea(HTML_FILE)) != NULL) {
+        nLineas++;
         char* linea = TransmutarLinea(HTML_FILE, RawLinea);
         if (linea != NULL) {
             //Será NULL cuando sea la última línea del documento
@@ -54,7 +56,7 @@ char* TransmutarLinea(FILE *archivoSRC, char *linea) {
     // Formatear la línea con comillas
     sprintf(result, "\"%s\"", linea);
 
-    // Si no es la última línea, añadir barra invertida y espacio
+    // Si no es la última línea, añadir barra invertida
     if (!esUltimaLinea(archivoSRC)) {
         len += 3;  // Para el espacio, la barra invertida y el null terminator
         char* newResult = realloc(result, len * sizeof(char));
@@ -65,7 +67,7 @@ char* TransmutarLinea(FILE *archivoSRC, char *linea) {
         }
 
         result = newResult;
-        strcat(result, " \\");  // Añadir barra invertida y espacio
+        strcat(result, "\\");  // Añadir barra invertida
     }
     //retorna la línea transmutada
     return result;

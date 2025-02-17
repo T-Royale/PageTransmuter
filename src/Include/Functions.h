@@ -1,6 +1,10 @@
 #ifndef FUNCTIONS_PAGETRANSMUTER_H
 #define FUNCTIONS_PAGETRANSMUTER_H
 
+#define version "ALPHA 1.0"
+
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +15,7 @@
 
 //Codigos de colores terminal linux
 #define BASH_COLOR_VERDE "tput setaf 2"
-#define BASH_COLOR_ROJO "tput setaf 1"
+#define BASH_COLOR_ROJO  "tput setaf 1"
 #define BASH_COLOR_RESET "tput sgr0"
 
 // Estructura de rutas
@@ -26,6 +30,8 @@ typedef struct {
 #define Saved_adr "Program_files/Saved_adresses.bin"
 #define Instrucciones_adr "Program_files/Instrucciones.bin"
 #define MAX_NAME_LEN 20
+#define true 1
+#define false 0
 
 // Variables globales (en main.c)
 extern bool limpiarEnInicio;
@@ -47,8 +53,9 @@ void limpiar();
 int inicio();
 void ElegirHTML();
 Rutas_t* DecidirDestino();
-void masOpciones();
+int masOpciones();
 void projectName(char* Nombre, int len);
+void linealarga(int n);
 
 // Funciones de procesamiento del HTML
 void TransmutarHTML(char* dest, char* src, char* name);
@@ -70,7 +77,7 @@ void GuardarRutas();
 void DefinirNuevaRuta();
 void CrearPrimeraRuta();
 void CrearRuta(Rutas_t ruta_a_crear);
-void BorrarRuta(int pos);
+void BorrarRuta();
 int MostrarHTMLdocs();
 char* SelectHTMLdocs(int pos);
 void pulirPath(char* string);

@@ -2,6 +2,9 @@
 #include "Include/Functions.h"
 
 //HandleFiles.h
+//Comprobar si hay alguna actualización disponible
+
+//HandleFiles.h
 //Termina el programa de forma segura
 void CerrarPrograma(){
     if(Rutas != NULL) free(Rutas);
@@ -18,7 +21,6 @@ void LeerRutas() {
     fread(Rutas, sizeof(Rutas_t), nDirecciones, save);
     fclose(save);
 }
-
 
 //HandleFiles.h
 //Lee las rutas guardadas y las muestra
@@ -40,7 +42,72 @@ void GuardarRutas() {
     fclose(save);
 }
 
+//HandleFiles.h
+//Crear la primera ruta
+void CrearPrimeraRuta(){
+    while(getchar() != '\n');
+    limpiar();
+    printf( "Añade tu primera ruta a PageTransmuter.\n"\
+            "Una ruta es la carpeta de tu proyecto donde quieres guardar el archivo transmutado.\n"\
+            "Puedes añadir mas de una ruta.\n"\
+            "La ruta se guardará para que la puedas usar más tarde.\n");
+    while(getchar() != '\n');
+    DefinirNuevaRuta();
+}
 
+//Handlefiles.h
+//Definir una nueva ruta
+void DefinirNuevaRuta(){
+    bool salir = false;
+    while(!salir){
+        limpiar();
+        Rutas_t NuevaRuta;
+
+        printf("Nombre de la nueva direccion:");
+        //Leer entrada del usuario y consumir carácteres restantes
+        if (fgets(NuevaRuta.nombre, sizeof(NuevaRuta.nombre), stdin) != NULL) {
+            if (strchr(NuevaRuta.nombre, '\n') == NULL) {
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
+            }
+        }
+
+        printf("Direccion del directorio destino:");
+        //Leer entrada del usuario y consumir carácteres restantes
+        if (fgets(NuevaRuta.path, sizeof(NuevaRuta.path), stdin) != NULL) {
+            if (strchr(NuevaRuta.path, '\n') == NULL) {
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
+            }
+        }
+
+        quitarSaltoLineaYEspacios(NuevaRuta.nombre, true);
+        quitarSaltoLineaYEspacios(NuevaRuta.path, false);
+
+        printf("Seguro que quieres añadir la siguiente ruta:\nNombre: %s\nPath: %s\nS/N\n", NuevaRuta.nombre, NuevaRuta.path);
+        char ans = getchar();
+        while(getchar() != '\n');
+        if(ans == 'n' || ans == 'N'){
+            continue;
+        }
+        if(rutaValida(NuevaRuta.path)){
+            limpiar();
+            printf("Nuevo destino añadido con éxito\n");
+            usleep(1000 * 1000);
+            CrearRuta(NuevaRuta);
+            return;
+        }
+        else{
+            limpiar();
+            system(BASH_COLOR_ROJO);  //rojo para indicar error
+            printf("La ruta \"%s\" no es válida.\nAsegúrate de que la ruta es un directorio válido. \
+            \nLas rutas con espacios no son válidas, reemplázalos con guiones bajos. \
+            \nSi estás seguro prueba a ejecutar PageTransmuter como superusuario.\n",NuevaRuta.path);
+            printf("Pulsa ENTER para continuar\n");
+            while(getchar() != '\n');
+        }
+    }
+}
 //HandleFiles.h
 //Crear ruta
 //Pasar Rutas_t como argumento
@@ -56,12 +123,21 @@ void CrearRuta(Rutas_t ruta_a_crear) {
 //HandleFiles.h
 //Borrar Ruta
 //Pasar posición a eliminar como argumento
-void BorrarRuta(int pos){
-    LeerRutas();
+void BorrarRuta(){
+    bool posicionvalida = false;
+    int eliminar;
+    do{
+        LeerRutas();
+        limpiar();
+        printf("Selecciona la ruta que quieres borrar\n");
+        MostrarRutasGuardadas();
+        scanf("%d", &eliminar);
+        // Verificar ruta seleccionada
+        if(eliminar >= 0 && eliminar < nDirecciones) posicionvalida = true;
+    } while(!posicionvalida);
     //Borrar la ruta
-    int nextPos = pos;
-    for(int i = 0; i < nDirecciones - pos; i++, nextPos++){
-        if(&Rutas[nextPos+1] == NULL) break;
+    int nextPos = eliminar;
+    for(int i = 0; i < nDirecciones - eliminar; i++, nextPos++){
         Rutas[nextPos] = Rutas[nextPos+1];
     }
     nDirecciones--;
@@ -86,10 +162,19 @@ int MostrarHTMLdocs() {
     // Lee cada archivo en el directorio
     while ((entry = readdir(dir)) != NULL) {
         // Verifica si el archivo tiene la extensión .html
-        if (strstr(entry->d_name, ".html") != NULL) {
+        if (strstr(entry->d_name, (LookforCSS) ? ".css" : ".html") != NULL) {
             printf("%d- %s\n", i, entry->d_name);
             i++;
         }
+    }
+
+    if(i == 0){
+        printf((LookforCSS) ?   "No se han encontrado arhcivos .css en la carpeta HTML_AQUI\n" : 
+                                "No se han encontrado arhcivos .html en la carpeta HTML_AQUI\n");
+        printf("Abrir la carpeta HTML_AQUI");
+        while(getchar() != '\n');
+        abrirRuta(HTML_DIR);
+        CerrarPrograma();
     }
 
     closedir(dir);
@@ -114,7 +199,7 @@ char *SelectHTMLdocs(int pos) {
     // Lee cada archivo en el directorio
     while ((entry = readdir(dir)) != NULL) {
         // Verifica si el archivo tiene la extensión .html
-        if (strstr(entry->d_name, ".html") != NULL) {
+        if (strstr(entry->d_name, ".html") != NULL || strstr(entry->d_name, ".css") != NULL ) {
             if (i == pos) {
                 // Asigna memoria para la ruta completa
                 rutaCompleta = malloc(strlen(HTML_DIR) + strlen(entry->d_name) + 2);
@@ -144,10 +229,7 @@ void pulirPath(char* string) {
 bool rutaValida(char* ruta){
     //Formatea la ruta
     pulirPath(ruta);
-    //comprobar si tiene espacios
-    for(int i = 0; i < strlen(ruta); i++){
-        if(ruta[i] == ' ') return false;
-    }
+    //Escapa los espacios
     //Si existe devuelve 0 (falso) al if
     return (access(ruta, F_OK)) ? false : true;
 }
@@ -211,4 +293,53 @@ void abrirRuta(char* ruta){
     char msg[6 + FILENAME_MAX];
     snprintf(msg, sizeof(msg), "xdg-open \"%s\"", ruta);
     system(msg);
+}
+
+//HandleFiles.h
+//Verifica los archivos del programa
+void verificarArchivos(){
+    // No hace falta comprobar si HTML_AQUI existe, mkdir -p lo creará si no existe
+    char crear_html_dir[FILENAME_MAX] = {0};
+    snprintf(crear_html_dir, FILENAME_MAX, "mkdir -p ./%s", HTML_DIR);
+    system(crear_html_dir);
+    int nArchivos = 2;
+    char *archivos_de_programa[] = {Instrucciones_adr, Saved_adr};
+    FILE *current = NULL;
+    for(int i = 0; i < nArchivos; i++){
+        current = fopen(archivos_de_programa[i], "r");
+        if(current == NULL) {
+            system("clear");
+            system(BASH_COLOR_ROJO);
+            perror("Faltan archivos del programa\nPrueba a reinstalar PageTransmuter");
+            CerrarPrograma();
+        }
+    }
+}
+
+//HandleFiles.h
+//Obtiene el tamaño del archivo HTML
+long long get_content_length(char* filename) {
+    FILE *file = fopen(filename, "rb"); // Abrir el archivo en modo binario
+    if (file == NULL) {
+        perror("Error al abrir el archivo");
+        return -1LL;
+    }
+
+    // Mover el puntero al final del archivo
+    if (fseeko(file, 0, SEEK_END) != 0) {
+        perror("Error al mover el puntero del archivo");
+        fclose(file);
+        return -1LL;
+    }
+
+    // Obtener la posición del puntero, que es el tamaño del archivo
+    off_t filesize = ftello(file);
+
+    if(filesize == -1) {
+        perror("Error al leer el tamaño del archivo");
+        fclose(file);
+        return -1LL;
+    }
+    fclose(file); // Cerrar el archivo
+    return (long long)filesize;
 }
