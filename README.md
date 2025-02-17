@@ -13,7 +13,7 @@
     ```
     curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/INSTALL.sh | bash
     ```
-*Para desinstalar PageTransmuter:*
++ Desinstalar PageTransmuter.
     ```
     curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/DELETE.sh | bash
     ```
