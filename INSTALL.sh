@@ -5,10 +5,10 @@
 # Variables:
 cli="$HOME/.bashrc"     # Modificar si usas otro
 
-release="v1.1-alfa"
-release_version="BETA_Linux"
-release_file="PageTransmuter_$release_version.tar.gz"
-release_link="https://github.com/T-Royale/PageTransmuter/releases/download/$release/$release_file"
+release="v1.0-alfa"
+release_version="v1.0-Alpha"
+release_file="PageTransmuter_${release_version}.tar.gz"
+release_link="https://github.com/T-Royale/PageTransmuter/releases/download/${release_version}/PageTransmuter_${release}.tar.gz"
 
 programs_dir="/usr/local/bin/T_Royale"
 program_dir="$programs_dir/PageTransmuter"

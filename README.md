@@ -11,11 +11,11 @@
     + Si no está instalado, [instálalo.](https://curl.se/download.html)
 2. Ejecuta mi script de instalación.
     ```
-    curl -sSL [URL del script] | bash
+    curl -sSL https://github.com/T-Royale/PageTransmuter/blob/Linux_Version/INSTALL.sh | bash
     ```
 ---
 #### Opciones adicionales:
 **Ejecutar el programa desde la línea de comandos con las opciones deseadas**
 + ``-low``: Añade la línea de estado y los encabezados de una respuesta HTTP.
 + ``-cpp``: Crea un archivo ``.hpp`` en lugar de ``.h``.
-+ ``-css``: Transmutará archivos ``.css`` en lugar de ``.html``     .
++ ``-css``: Transmutará archivos ``.css`` en lugar de ``.html``.
