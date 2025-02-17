@@ -11,7 +11,11 @@
     + Si no está instalado, [instálalo.](https://curl.se/download.html)
 2. Ejecuta mi script de instalación.
     ```
-    curl -sSL https://github.com/T-Royale/PageTransmuter/blob/Linux_Version/INSTALL.sh | bash
+    curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/INSTALL.sh | bash
+    ```
+*Para desinstalar PageTransmuter:*
+    ```
+    curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/DELETE.sh | bash
     ```
 ---
 #### Opciones adicionales:
