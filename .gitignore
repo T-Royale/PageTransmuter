@@ -1,23 +1,17 @@
 # archivos a ignorar por git
 Prueba/
 
-
 .vscode/
-
 
 TEST/
 
-
 tags
-
 
 dockerfile
 
-
 PageTransmuter
-
 
 UPDATE.sh
 
-
 PageTransmuter.tar.gz
+dockerfile

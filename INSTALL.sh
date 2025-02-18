@@ -39,7 +39,7 @@ sudo rm -f "$release_file"\
 && echo "Archivos temporales de instalación eliminados"\
 || echo "ERROR: al eliminar archivos temporales de la instalación"
 
-echo "export PATH=\"\$PATH:$program_dir\"" >> "$cli"\
+echo "PageTransmuter(){ cd /usr/local/bin/T_Royale/PageTransmuter; ./PageTransmuter;}" >> "$cli"\
 && echo "PageTransmuter ha sido añadido a las variables de entorno PATH"\
 || echo "ERROR: al añadir PageTransmuter a las variables de entorno PATH"
 
