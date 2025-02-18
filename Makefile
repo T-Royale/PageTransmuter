@@ -29,7 +29,8 @@ PageTransmuter_files = \
 	$(PROGDEST)/Instrucciones.bin \
 	$(PROGDEST)/PageTransmuter_icon.png \
 	$(PROGDEST)/Saved_adresses.bin\
-	$(PROGDEST)/PageTransmuter.desktop
+	$(PROGDEST)/PageTransmuter.desktop\
+	$(PROGDEST)/PageTransmuter.sh
 
 # Compilador y flags
 CC = gcc
