@@ -6,5 +6,5 @@ Terminal=true
 Type=Application
 Categories=HTML;CSS;WEB;HTTP;C;C++;CPP;
 
-Exec=/usr/local/bin/T_Royale/PageTransmuter/PageTransmuter
+Exec=/usr/local/bin/T_Royale/PageTransmuter/Program_files/PageTransmuter.sh
 Icon=/usr/local/bin/T_Royale/PageTransmuter/Program_files/PageTransmuter_icon.png

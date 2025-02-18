@@ -13,12 +13,16 @@ release_link="https://github.com/T-Royale/PageTransmuter/releases/download/${rel
 programs_dir="/usr/local/bin/T_Royale"
 program_dir="$programs_dir/PageTransmuter"
 
+applications_dir="/usr/share/applications"
+desktop_file="${applications_dir}/PageTransmuter.desktop"
+
 # Comprobar que xdg-utils está instalado
 if command -v xdg-open &> /dev/null
 then
     echo "xdg-utils está instalado"
 else
-    echo -e "ERROR: xdg-open NO está instalado y es necesario para PageTransmuter."
+    echo "ERROR: xdg-open NO está instalado y es necesario para PageTransmuter."
+    echo -e "Puedes descargar xdg-utils desde el siguiente enlace: \nhttps://www.freedesktop.org/wiki/Software/xdg-utils/"
     exit 1
 fi
 
@@ -35,16 +39,42 @@ sudo tar -xvzf "$release_file" -C "$programs_dir"\
 && echo "PageTransmuter descomprimido con éxito"\
 || echo "ERROR: al descomprimir PageTransmuter"
 
+USER_GROUP=$(id -gn $USER)
+
+read -p "¿Quieres instalar PageTransmuter para todos los usuarios? (S/n): " respuesta
+respuesta=${respuesta:-S}  # S por defecto
+respuesta=$(echo "$respuesta" | tr '[:lower:]' '[:upper:]')  # Convertir a mayúsculas
+
+if [[ "$respuesta" == "S" ]]; then
+    sudo chmod -R 777 ${program_dir}/\
+    && echo "Permisos otorgados a todos los usuarios"\
+    || echo "ERROR: al modificar los permisos del programa"echo "Has cancelado la operación."    echo "Has elegido continuar."
+else
+    sudo chmod -R 771 ${program_dir}/\
+    && echo "Permisos otorgados sólamente a $USER y grupo $USER_GROUP"\
+    || echo "ERROR: al modificar los permisos del programa"echo "Has cancelado la operación."
+fi
+
 sudo rm -f "$release_file"\
 && echo "Archivos temporales de instalación eliminados"\
 || echo "ERROR: al eliminar archivos temporales de la instalación"
 
-echo "PageTransmuter(){ cd /usr/local/bin/T_Royale/PageTransmuter; ./PageTransmuter;}" >> "$cli"\
-&& echo "PageTransmuter ha sido añadido a las variables de entorno PATH"\
-|| echo "ERROR: al añadir PageTransmuter a las variables de entorno PATH"
+if alias PageTransmuter &>/dev/null; then
+    echo "El alias PageTransmuter ya está definido."
+else
+    echo "alias PageTransmuter='/usr/local/bin/T_Royale/PageTransmuter/Program_files/PageTransmuter.sh'" >> "$cli"\
+    && echo "PageTransmuter ha sido añadido a la línea de comandos bash"\
+    || echo "ERROR: al crear alias en .bashrc"
+fi
 
-sudo mv "$program_dir/Program_files/PageTransmuter.desktop" "/usr/share/applications"\
-&& echo "El archivo .desktop de PageTransmuter ha sido movido a /usr/share/applications"\
+if [ -f "${desktop_file}" ]; then
+    sudo rm "${desktop_file}"\
+    && echo "Eliminado ${desktop_file} antiguo"\
+    || echo "ERROR: al eliminar ${desktop_file} antiguo"
+fi
+
+sudo mv "$program_dir/Program_files/PageTransmuter.desktop" "${applications_dir}"\
+&& echo "Se ha creado la aplicación PageTransmuter"\
 || echo "ERROR: al mover el archivo .desktop a /usr/share/applications"
 
 echo "Instalación terminada"
