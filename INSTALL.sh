@@ -16,6 +16,15 @@ program_dir="$programs_dir/PageTransmuter"
 applications_dir="/usr/share/applications"
 desktop_file="${applications_dir}/PageTransmuter.desktop"
 
+# Comprobar si clear está instalado
+if command -v clear &> /dev/null; then
+    echo "clear está instalado"
+else
+    echo "ERROR: clear NO está instalado y es necesario para PageTransmuter."
+    echo "Descarga ncurses y prueba otra vez"
+    exit 1
+fi
+
 # Comprobar que xdg-utils está instalado
 if command -v xdg-open &> /dev/null
 then
@@ -48,25 +57,25 @@ respuesta=$(echo "$respuesta" | tr '[:lower:]' '[:upper:]')  # Convertir a mayú
 if [[ "$respuesta" == "S" ]]; then
     sudo chmod -R 777 ${program_dir}/\
     && echo "Permisos otorgados a todos los usuarios"\
-    || echo "ERROR: al modificar los permisos del programa"echo "Has cancelado la operación."    echo "Has elegido continuar."
+    || echo "ERROR: al modificar los permisos del programa"echo "Has cancelado la operación."
 else
     sudo chmod -R 771 ${program_dir}/\
     && echo "Permisos otorgados sólamente a $USER y grupo $USER_GROUP"\
-    || echo "ERROR: al modificar los permisos del programa"echo "Has cancelado la operación."
+    || echo "ERROR: al modificar los permisos del programa"
 fi
 
 sudo rm -f "$release_file"\
 && echo "Archivos temporales de instalación eliminados"\
 || echo "ERROR: al eliminar archivos temporales de la instalación"
 
-if alias PageTransmuter &>/dev/null; then
-    echo "El alias PageTransmuter ya está definido."
+if command -v which PageTransmuter &> /dev/null; then
+    echo "La PageTransmuter ya está definido en la CLI."
 else
-    echo "alias PageTransmuter='/usr/local/bin/T_Royale/PageTransmuter/Program_files/PageTransmuter.sh'" >> "$cli"\
+    echo "PageTransmuter() { cd /usr/local/bin/T_Royale/PageTransmuter; ./PageTransmuter "$@"; cd }" >> "$cli"\
     && echo "PageTransmuter ha sido añadido a la línea de comandos bash"\
-    || echo "ERROR: al crear alias en .bashrc"
+    || echo "ERROR: al crear función en .bashrc"
 fi
-
+ 
 if [ -f "${desktop_file}" ]; then
     sudo rm "${desktop_file}"\
     && echo "Eliminado ${desktop_file} antiguo"\
