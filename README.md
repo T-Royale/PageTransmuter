@@ -3,7 +3,7 @@
 ## La herramienta que buscas para tu servidor HTTP personal
 ### Versión: *ALPHA 1.0*
 ---
-#### Instalación (Linux):
+### Instalación (Linux):
 1. Confirma que tienes **curl** instalado.
     ```
     curl --version
@@ -13,12 +13,12 @@
     ```
     curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/INSTALL.sh | bash
     ```
-+ Desinstalar PageTransmuter.
++ Desinstalar PageTransmuter. 😭
     ```
     curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/DELETE.sh | bash
     ```
 ---
-#### Opciones adicionales:
+### Opciones adicionales:
 **Ejecutar el programa desde la línea de comandos con las opciones deseadas**
 + ``-low``: Añade la línea de estado y los encabezados de una respuesta HTTP.
 + ``-cpp``: Crea un archivo ``.hpp`` en lugar de ``.h``.
