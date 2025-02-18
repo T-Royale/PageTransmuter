@@ -1,17 +1,16 @@
 # archivos a ignorar por git
-Prueba/
 
+# Configuraciones de vscodium
 .vscode/
-
+# Varios tests
 TEST/
-
+# Tags de ctags (nvim)
 tags
-
+# dockerfile 
 dockerfile
-
+# Pruebas de compilación
 PageTransmuter
-
+# Script de actualización, saldrá cuando lance una nueva versión
 UPDATE.sh
-
+# Archivo comprimido para la release
 PageTransmuter.tar.gz
-dockerfile
