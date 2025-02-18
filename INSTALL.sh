@@ -55,11 +55,11 @@ respuesta=${respuesta:-S}  # S por defecto
 respuesta=$(echo "$respuesta" | tr '[:lower:]' '[:upper:]')  # Convertir a mayúsculas
 
 if [[ "$respuesta" == "S" ]]; then
-    sudo chmod -R 777 ${program_dir}/\
+    sudo chmod -R 777 "${program_dir}/"\
     && echo "Permisos otorgados a todos los usuarios"\
     || echo "ERROR: al modificar los permisos del programa"
 else
-    sudo chmod -R 771 ${program_dir}/\
+    sudo chmod -R 771 "${program_dir}/"\
     && echo "Permisos otorgados sólamente a $USER y grupo $USER_GROUP"\
     || echo "ERROR: al modificar los permisos del programa"
 fi
