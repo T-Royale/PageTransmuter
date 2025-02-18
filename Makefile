@@ -100,7 +100,7 @@ $(BUILDDIR)/$(EXE): $(OBJECTS) $(HTMLDEST) $(PageTransmuter_files)
 
 # Comprimir carpeta en .tar.gz para el lanzamiento
 release: build RemoveOBJS
-	tar -zcvf $(COMPRIMIDO) $(BUILDDIR) \
+	@tar -zcvf $(COMPRIMIDO) $(BUILDDIR) \
 	&& echo "PageTransmuter comprimido en .tar.gz" \
 	|| echo "ERROR: al comprimir PageTransmuter"
 
