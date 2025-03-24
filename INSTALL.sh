@@ -44,7 +44,7 @@ sudo curl -L -o "$release_file" "$release_link"\
 && echo "PageTransmuter descargado desde GitHub"\
 || echo "ERROR: al descargar PageTransmuter desde GitHub"
 
-sudo tar -xvzf "$release_file" -C "$programs_dir"\
+sudo tar --no-same-owner --no-same-permissions -xvzf "$release_file" -C "$programs_dir"\
 && echo "PageTransmuter descomprimido con éxito"\
 || echo "ERROR: al descomprimir PageTransmuter"
 
@@ -67,14 +67,6 @@ fi
 sudo rm -f "$release_file"\
 && echo "Archivos temporales de instalación eliminados"\
 || echo "ERROR: al eliminar archivos temporales de la instalación"
-
-if command -v which PageTransmuter &> /dev/null; then
-    echo "La PageTransmuter ya está definido en la CLI."
-else
-    echo "PageTransmuter() { cd /usr/local/bin/T_Royale/PageTransmuter; ./PageTransmuter "$@"; cd }" >> "$cli"\
-    && echo "PageTransmuter ha sido añadido a la línea de comandos bash"\
-    || echo "ERROR: al crear función en .bashrc"
-fi
  
 if [ -f "${desktop_file}" ]; then
     sudo rm "${desktop_file}"\
@@ -85,5 +77,10 @@ fi
 sudo mv "$program_dir/Program_files/PageTransmuter.desktop" "${applications_dir}"\
 && echo "Se ha creado la aplicación PageTransmuter"\
 || echo "ERROR: al mover el archivo .desktop a /usr/share/applications"
+
+# Crear enlace simbólico global
+sudo ln -sf /usr/local/bin/T_Royale/PageTransmuter/Program_files/PageTransmuter.sh /usr/local/bin/PageTransmuter \
+&& echo "Enlace simbólico creado" \
+|| echo "ERROR: al crear enlace simbólico."
 
 echo "Instalación terminada"
