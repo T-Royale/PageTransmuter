@@ -27,11 +27,10 @@ void LeerRutas() {
 void MostrarRutasGuardadas() {
     LeerRutas();
     for(int i = 0; i < nDirecciones; i++){
-        printf("%d- %s", i,Rutas[i].nombre);
+        printf("%d- %s\n", i,Rutas[i].nombre);
         usleep(250 * 1000);
     }
 }
-
 
 //HandleFiles.h
 //Guardar rutas
@@ -108,6 +107,7 @@ void DefinirNuevaRuta(){
         }
     }
 }
+
 //HandleFiles.h
 //Crear ruta
 //Pasar Rutas_t como argumento
@@ -118,7 +118,6 @@ void CrearRuta(Rutas_t ruta_a_crear) {
     Rutas[nDirecciones - 1] = ruta_a_crear;
     GuardarRutas();
 }
-
 
 //HandleFiles.h
 //Borrar Ruta
@@ -215,6 +214,7 @@ char *SelectHTMLdocs(int pos) {
     closedir(dir);
     return rutaCompleta; // Devuelve la ruta completa del archivo en la posición pos
 }
+
 //HandleFiles.h
 //Cambia los "\" por "/" y quita un salto de línea
 void pulirPath(char* string) {
@@ -224,6 +224,7 @@ void pulirPath(char* string) {
         if(string[i] == '\n') string[i] = '\0';
     }
 }
+
 //HandleFiles.h
 //Comprueba si una dirección es valida
 bool rutaValida(char* ruta){
@@ -233,6 +234,7 @@ bool rutaValida(char* ruta){
     //Si existe devuelve 0 (falso) al if
     return (access(ruta, F_OK)) ? false : true;
 }
+
 //HandleFiles.h
 //Quitar salto de linea (y espacios)
 void quitarSaltoLineaYEspacios(char* str, bool QuitarEspacios){
@@ -241,7 +243,7 @@ void quitarSaltoLineaYEspacios(char* str, bool QuitarEspacios){
         if (QuitarEspacios) if(str[i] == ' ') str[i] = '_';
     }
 }
-extern bool charValido(char c, char* string, size_t *len);
+
 //HandleFiles.h
 //Leer línea que no se su tamaño
 //Escapa los caracteres no validos

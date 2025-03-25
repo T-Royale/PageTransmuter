@@ -185,7 +185,7 @@ Rutas_t* DecidirDestino(){
         limpiar();
         printf("Elige la ruta destino:\n");
         MostrarRutasGuardadas();    //nDirecciones es en nº de rutas guardadas+1
-        printf("\n%d- Más opciones\n", nDirecciones);
+        printf("%d- Más opciones\n", nDirecciones);
         int eleccion = 0;
         scanf("%d", &eleccion);
         while(getchar() != '\n');
