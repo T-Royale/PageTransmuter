@@ -43,11 +43,17 @@ Por algún motivo muchos navegadores lo detectan como malicioso, en ese caso pue
     + Si no está instalado, [instálalo.](https://curl.se/download.html)
 2. Ejecuta mi script de instalación.
     ```
-    curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/INSTALL.sh | bash
+    curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/INSTALL.sh -o Install_PageTransmuter.sh
+    chmod +x Install_PageTransmuter.sh
+    ./Install_PageTransmuter.sh 
+    rm Install_PageTransmuter.sh
     ```
 + Desinstalar PageTransmuter. 😭
     ```
-    curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/DELETE.sh | bash
+    curl -sSL https://raw.githubusercontent.com/T-Royale/PageTransmuter/refs/heads/Linux_Version/DELETE.sh -o Uninstall_PageTransmuter.sh
+    chmod +x Uninstall_PageTransmuter.sh
+    ./Uninstall_PageTransmuter.sh 
+    rm Uninstall_PageTransmuter.sh
     ```
 ### Método 2: Compilación manual
 1. Verifica que tienes git, make y gcc instalados
