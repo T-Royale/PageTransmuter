@@ -13,7 +13,7 @@
   >
 </a>
 
-Por algún motivo muchos navegadores lo detectan como malicioso, en ese caso puedes pasar al método 2
+⚠️ Por algún motivo muchos navegadores lo detectan como malicioso, en ese caso puedes pasar al método 2
 
 ### Método 2: Compilación manual
 1. Verifica que tienes git, make y gcc instalados
