@@ -16,6 +16,9 @@ program_dir="$programs_dir/PageTransmuter"
 applications_dir="/usr/share/applications"
 desktop_file="${applications_dir}/PageTransmuter.desktop"
 
+SoftLink_target="/usr/local/bin/T_Royale/PageTransmuter/Program_files/PageTransmuter.sh"
+Softlink_dir="/usr/local/bin/PageTransmuter"
+
 # Comprobar si clear está instalado
 if command -v clear &> /dev/null; then
     echo "clear está instalado"
@@ -79,8 +82,24 @@ sudo mv "$program_dir/Program_files/PageTransmuter.desktop" "${applications_dir}
 || echo "ERROR: al mover el archivo .desktop a /usr/share/applications"
 
 # Crear enlace simbólico global
-sudo ln -sf /usr/local/bin/T_Royale/PageTransmuter/Program_files/PageTransmuter.sh /usr/local/bin/PageTransmuter \
-&& echo "Enlace simbólico creado" \
-|| echo "ERROR: al crear enlace simbólico."
+if [ ! -L "$Softlink_dir" ]; then
+    sudo ln -sf "$SoftLink_target" "$Softlink_dir" \
+    && echo "Enlace simbólico creado" \
+    || echo "ERROR: al crear enlace simbólico."
+else
+    if [[ "$(readlink "$LINK")" != "$TARGET" ]]; then
+        echo "El enlace simbólico está roto, reemplazando"
+        
+        sudo rm "$Softlink_dir" \
+        && echo "Enlace simbólico inválido eliminado" \
+        || echo "ERROR: al eliminar enlace simbólico inválido."
+        
+        sudo ln -sf "$SoftLink_target" "$Softlink_dir" \
+        && echo "Enlace simbólico nuevo creado" \
+        || echo "ERROR: al crear nuevo enlace simbólico."
+    else
+        echo "El enlace simbólico ya estaba creado"
+    fi
+fi
 
 echo "Instalación terminada"
