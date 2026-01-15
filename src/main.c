@@ -1,35 +1,32 @@
 //Headers del programa
 #include "Include/Functions.h"
 // Variables globales
-bool limpiarEnInicio = true;
 bool DebugMode = false;
-Rutas_t *Rutas = NULL;
-int nDirecciones = 0;
-char* HTML_ELEGIDO = NULL;
-bool LowLevelHTML = false;
-bool hppFile = false;
-bool LookforCSS = false;
-bool ayuda = false;
 int nLineas = 0; 
 
-//Función principal: 
 int main(int argc, char *argv[]) {
-    verificarArchivos();
-    LeerRutas();
-    ComprobarArgumentos(argc, argv);
-    inicio(); //Menú de bienvenida, termina cuando empieza la TRANSMUTACIÓN
-    ElegirHTML(); //Pide al usuario que elija el HTML a transmutar
-    //La dirección del HTML orígen se almacena en HTML_ELEGIDO
-    Rutas_t* rutaElegida = DecidirDestino();    //Decidir ubicación final
-    char Nombre[MAX_NAME_LEN];    //Nombre del proyecto
-    projectName(Nombre, MAX_NAME_LEN); //Guarda el nombre del proyecto
-    TransmutarHTML(rutaElegida->path, HTML_ELEGIDO, Nombre);
-    free(HTML_ELEGIDO);
-    free(Rutas);
-    if(DebugMode){
-        printf("%s", final);
-        system("pause");
+    FILE* input;
+    FILE* output;
+    flags_t* flags = flags_get(argc, argv);
+
+    if(flags->version) print_version();
+    else if(flags->help) print_help(argv[0]);
+    else if(!flags->input) fprintf(stderr, "-f flag is required\nRun %s -h for help\n", argv[0]);
+    else if(!valid_path(flags->input)) fprintf(stderr, "Input path is not valid\n");
+    else {
+        input = fopen(flags->input, "r");
+        if(!flags->output || valid_file(flags->output)){
+            output = (flags->output) ? fopen(flags->output, "w") : stdout;
+            fprintf(output, "Success!\n");
+        }
     }
-    abrirRuta(rutaElegida->path);
+
+    flags_free(flags);
+    close_files(input, output);
     return 0;
+}
+
+void close_files(FILE* input, FILE* output){
+    if(input != NULL) fclose(input);
+    if(output != NULL && output != STDIN_FILENO) fclose(output);
 }
