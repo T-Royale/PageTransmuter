@@ -2,15 +2,22 @@
 #include "Include/Functions.h"
 
 //Comprueba si una dirección es valida
-bool valid_path(char* path){
+bool check_path(char* path){
     pulirPath(path);
     return (access(path, F_OK)) ? false : true;
 }
 
-//Comprueba si un archivo existe
-bool valid_file(char* file){
-    FILE* test = fopen(file, "r");
-    if(!test) return false;
+// Check if file exists and is HTML
+bool validate_html_file(char* filename){
+    if(strcasestr(filename, ".html") == NULL){
+        fprintf(stderr, "File must be an .html file\n");
+        return false;
+    }
+    FILE* test = fopen(filename, "r");
+    if(!test) {
+        fprintf(stderr, "File %s doesn't exist\n", filename);
+        return false;
+    }
     fclose(test);
     return true;
 }
@@ -22,6 +29,25 @@ void pulirPath(char* string) {
         if(string[i] == '\\') string[i] = '/';
         if(string[i] == '\n') string[i] = '\0';
     }
+}
+
+//Obtiene el tamaño del archivo HTML
+long long get_content_length(char* filename){
+    FILE *file = fopen(filename, "rb"); // Abrir el archivo en modo binario
+    if (file == NULL) {
+        perror("Error al abrir el archivo");
+        return -1LL;
+    }
+    // Mover el puntero al final del archivo
+    fseeko(file, 0, SEEK_END);
+    off_t filesize = ftello(file); // La posición del puntero es el tamaño del archivo
+    if(filesize == -1) {
+        fprintf(stderr, "Error al leer el tamaño del archivo");
+        fclose(file);
+        return -1LL;
+    }
+    fclose(file); // Cerrar el archivo
+    return (long long)filesize;
 }
 /*
 //Leer rutas gruardadas
@@ -294,32 +320,5 @@ void verificarArchivos(){
             CerrarPrograma();
         }
     }
-}
-
-//Obtiene el tamaño del archivo HTML
-long long get_content_length(char* filename) {
-    FILE *file = fopen(filename, "rb"); // Abrir el archivo en modo binario
-    if (file == NULL) {
-        perror("Error al abrir el archivo");
-        return -1LL;
-    }
-
-    // Mover el puntero al final del archivo
-    if (fseeko(file, 0, SEEK_END) != 0) {
-        perror("Error al mover el puntero del archivo");
-        fclose(file);
-        return -1LL;
-    }
-
-    // Obtener la posición del puntero, que es el tamaño del archivo
-    off_t filesize = ftello(file);
-
-    if(filesize == -1) {
-        perror("Error al leer el tamaño del archivo");
-        fclose(file);
-        return -1LL;
-    }
-    fclose(file); // Cerrar el archivo
-    return (long long)filesize;
 }
 */

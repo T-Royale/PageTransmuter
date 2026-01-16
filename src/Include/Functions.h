@@ -20,10 +20,6 @@ typedef struct {
     bool version;
 } flags_t;
 
-// Variables globales (en main.c)
-extern bool DebugMode;
-extern int nLineas;
-
 // Declaraciones de funciones
 flags_t* flags_get(int argc, char *argv[]);
 void flags_free(flags_t* flags);
@@ -39,13 +35,14 @@ bool char_valid(char c, char* string, size_t* len);
 
 // Funciones para la creación del header
 void add_include_guards(FILE* stream, char* name);
-void LowLevelHeader(FILE* stream);
+void add_http_headers(FILE* stream, long long *content_length);
 void close_include_guards(FILE* stream);
 
 // Manejo de archivos y rutas
-bool valid_path(char* path);
-bool valid_file(char* file);
+bool check_path(char* path);
+bool validate_html_file(char* file);
 void close_files(FILE* input, FILE* output);
+long long get_content_length(char* filename);
 
 void CerrarPrograma();
 void LeerRutas();
@@ -62,6 +59,5 @@ char* leerLinea(FILE* dir);
 bool TieneContenido(char* ruta);
 void abrirRuta(char* ruta);
 void verificarArchivos();
-long long get_content_length(char* filename);
 
 #endif
