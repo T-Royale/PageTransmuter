@@ -1,4 +1,8 @@
-#include "Include/Functions.h"
+#include "Include/cli.h"
+#include "Include/files.h"
+#include "Include/content.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /* main.c - program entry point
 	- Performs necesary checks before entering main loop

@@ -1,4 +1,10 @@
-#include "Include/Functions.h"
+#include "Include/cli.h"
+#include "Include/version.h"
+
+#include <stdlib.h>
+#include <getopt.h>
+#include <string.h>
+#include <stdio.h>
 
 /* cli.c - user interaction via command line
 	- parse cli flags and print help messages
@@ -92,7 +98,7 @@ void flags_free(flags_t* flags){
 	free(flags);
 }
 
-void print_help(char* program_name){
+void print_help(const char* program_name){
 	printf(
 		"Usage:\n"
 		"	%s -f <file.html> [options]\n"

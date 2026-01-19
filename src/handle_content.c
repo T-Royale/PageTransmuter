@@ -1,10 +1,14 @@
-#include "Include/Functions.h"
+#include "Include/content.h"
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdbool.h>
 
 /* handle_content.c - craft and print program output
 	- system errors are only reported using perror
 */
 
-void add_include_guards(FILE* stream, char* name){
+void add_include_guards(FILE* stream, const char* name){
 	int len = strlen(name) + 3;
 	char *defName = malloc(len);
 	sprintf(defName, "%s_H", name);
@@ -16,7 +20,7 @@ void add_include_guards(FILE* stream, char* name){
 	free(defName);
 }
 
-void create_macro(FILE* stream, char* name){
+void create_macro(FILE* stream, const char* name){
 	fprintf(stream, "#define %s \\ \n", name);
 }
 
