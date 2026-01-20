@@ -20,6 +20,9 @@ install: $(DIRS) $(TARGET)
 	sudo mv $(TARGET) $(INSTALATION_PATH)
 	make clean
 
+debug: $(DIRS) $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS) -g
+
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 

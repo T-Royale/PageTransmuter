@@ -27,6 +27,7 @@ flags_t* flags_get(int argc, char **argv){
 		{"help", no_argument, 0, 'h'},
 		{"version", no_argument, 0, 'v'},
 		{"http-headers", no_argument, 0, 't'},
+		{0, 0, 0, 0},
 	};
 	int opt_index = 0;
 	int c = -1;
@@ -105,10 +106,10 @@ void print_help(const char* program_name){
 		"Options:\n"
 		"	-f, --file <file.html>		Input HTML file (required)\n"
 		"	-o, --output <file.h>		Output header file (default: stdout)\n"
-		"	-n, --macro-name			Macro name (default: derived from input file)\n"
-		"	-t, --http-headers			Add HTTP headers to output\n"\
-		"	-v, --version				Show installed version\n"
-		"	-h, --help					Display this help message\n"
+		"	-n, --macro-name		Macro name (default: derived from input file)\n"
+		"	-t, --http-headers		Add HTTP headers to output\n"
+		"	-v, --version			Show installed version\n"
+		"	-h, --help			Display this help message\n"
 		, program_name);
 }
 
